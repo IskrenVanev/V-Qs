@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "60Gp20zfB9l95jFwpGd+bLbRtBLA6MgkH5AKeh29JCw=",
+  "Source": "VoteAndQuizWebApi",
+  "BasePath": "_content/VoteAndQuizWebApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
