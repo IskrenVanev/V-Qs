@@ -12,6 +12,7 @@ namespace VoteAndQuizWebApi.Models
         public string Name { get; set; }
         public Guid CreatorId { get; set; }
         [ForeignKey("CreatorId")]
+        [Required]
         public User Creator { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
@@ -21,12 +22,12 @@ namespace VoteAndQuizWebApi.Models
         public long quizVotes { get; set; }
 
         [Required]
-        [JsonIgnore]
         public ICollection<UserQuizAnswer> Options { get; set; }
 
         public int CorrectOptionId { get; set; }
         [Required]
         [ForeignKey("CorrectOptionId")]
+
         public QuizOption CorrectOption { get; set; }
         [Required]
         public bool IsActive { get; set; }

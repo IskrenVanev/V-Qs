@@ -1,101 +1,157 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
+using System.Diagnostics.Metrics;
+using AutoMapper;
 using VoteAndQuizWebApi.Dto;
+
+
 using VoteAndQuizWebApi.Models;
 using VoteAndQuizWebApi.Repository.IRepository;
 
 namespace VoteAndQuizWebApi.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/Quizzes")]
     [ApiController]
     public class QuizzesController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        //private readonly ILogger _logger;
+        private readonly IMapper _mapper;
          private readonly IQuizRepository _quizRepository;
-        public QuizzesController(IUnitOfWork unitOfWork , IQuizRepository quizRepository)
+        public QuizzesController(IUnitOfWork unitOfWork , IQuizRepository quizRepository, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
              _quizRepository = quizRepository;
-            //  _logger = logger;
+             _mapper = mapper;
         }
-        [HttpGet(Name = "Index")]
+
+        [HttpGet]
         public IActionResult Index()//Lists all quizzes on the main quiz page
         {
-            IQueryable<Quiz> quizzesQuery = _unitOfWork.Quiz.GetAll()
-                .Include(q => q.Creator)
-                .Include(q => q.Options)
-                .Include(q => q.CorrectOption);
-
-            // Project the Quiz objects into QuizViewModel objects
-            var quizzesList = quizzesQuery.Select(q => new QuizDTO
-            {
-                Id = q.Id,
-                Name = q.Name,
-                CreatedAt = q.CreatedAt,
-                UpdatedAt = q.UpdatedAt,
-                QuizEndDate = q.QuizEndDate,
-                quizVotes = q.quizVotes,
-                Options = q.Options,
-                IsActive = q.IsActive,
-                IsDeleted = q.IsDeleted,
-                ShowQuiz = q.ShowQuiz,
-
-            }).ToList();
-
-            return Json(quizzesList);
-
-
+            var quizzes = _mapper.Map<List<QuizForIndexMethodDTO>>(_unitOfWork.Quiz.GetAll().Include(q => q.Options));
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            return Json(quizzes);
         }
-        [HttpGet("{id}")]
-        [ProducesResponseType(200)]
-        public IActionResult Details(int? id)//You should be able to access Details page to vote for a quiz option.
-        {
-            if (id == null)
-            {
-                return BadRequest();
-            }
+        
+         [HttpGet("{id}")]
+         [ProducesResponseType(200)]
+         public IActionResult Details(int? id)//You should be able to access Details page to vote for a quiz option.
+         {
+             if (id == null)
+                 return BadRequest();
+             
+             
+             //Details Method Dto ***
+             var quiz = _mapper.Map<QuizForIndexMethodDTO>(_unitOfWork.Quiz.Get(q => q.Id == id, "Options"));
+             
+             if (quiz == null)
+                 return NotFound();
+             
+             return Json(quiz);
+         }
+        
+        
+        
+        
+        
+       
+         [HttpPost]
+         public IActionResult Create([FromBody] QuizForCreateMethodDTO quiz)//this is the post method for creating a new quiz
+         {
+            
+            
+             if (quiz == null)
+                 return BadRequest(ModelState);
+             var newQuiz = _mapper.Map<Quiz>(quiz);   
+             
+             //var newQuiz = _mapper.Map<QuizForCreateMethodDTO>(typeof(Quiz));//quiz is dto, it is not the real model from database
+             Console.WriteLine("HEREEEEEEEEEEEEEEEEEEE");
+             
+             
+             
+             if (!ModelState.IsValid)
+                 return BadRequest(ModelState);
+             
+             
+             if (!_quizRepository.CreateQuiz(newQuiz))
+             {
+                 ModelState.AddModelError("", "Something went wrong while saving");
+                 return StatusCode(500, ModelState);
+             }
+             
+             
+             return Ok("Successfully created");
+             
+             
+             
+             // if (!string.TryParse(quiz.Creator.Id, out string creatorId))
+             // {
+             //     // Handle the case where quiz.Creator.Id is not a valid integer.
+             //     ModelState.AddModelError("Creator.Id", "Invalid Creator ID format");
+             //     return BadRequest(ModelState);
+             // }
+             // var TheUser = new User
+             // {
+             //     Id = creatorId,
+             //     UserName = quiz.Creator.UserName,
+             //     AuthId = quiz.Creator.AuthId,
+             //     Wins = quiz.Creator.Wins,
+             //     Loses = quiz.Creator.Loses,
+             // };
+             //
+             //
+             //  var newQuiz = new Quiz         
+             //  {
+             //     
+             //      Creator = TheUser,
+             //      Name = quiz.Name,
+             //      CreatedAt = DateTime.Now,
+             //      QuizEndDate = quiz.QuizEndDate,
+             //     
+             //      
+             //    
+             //      IsActive  = true,
+             //      IsDeleted  = false,
+             //      UpdatedAt = null,
+             //      DeletedAt = null,
+             //      ShowQuiz = true,
+             //      quizVotes = 0 // Initialize vote count to 0
+             //          
+             //  };
+        
+             //var quizObj = _quizRepository.Get(q => q.Name.Trim().ToUpper() == quiz.Name.TrimEnd().ToUpper());
+        
+             //if (quizObj != null)
+             //{
+             //    ModelState.AddModelError("", "Quiz already exists");
+             //    return StatusCode(422, ModelState);
+             //}
+        
+            
+        
+        
+             // if (!_quizRepository.CreateQuiz(newQuiz))
+             // {
+             //     ModelState.AddModelError("", "Something went wrong while saving");
+             //     return StatusCode(500, ModelState);
+             // }
+        
+        
+             
+         }
 
-
-            var quiz = _unitOfWork.Quiz.Get(q => q.Id == id, "Options");
-
-
-
-            if (quiz == null)
-            {
-                return NotFound();
-            }
-
-            var quizVm = new QuizDTO
-            {
-                Id = quiz.Id,
-                Name = quiz.Name,
-                CreatedAt = quiz.CreatedAt,
-                UpdatedAt = quiz.UpdatedAt,
-                QuizEndDate = quiz.QuizEndDate,
-                quizVotes = quiz.quizVotes,
-                Options = quiz.Options,
-                IsActive = quiz.IsActive,
-                IsDeleted = quiz.IsDeleted,
-                ShowQuiz = quiz.ShowQuiz,
-            };
-
-
-
-            return Json(quizVm);
-        }
-        [HttpPost]
-        public  IActionResult Create([FromBody] Quiz obj)//this is the post method for creating a new quiz
-        {
-            if (!_quizRepository.CreateQuiz(obj))
-            {
-                ModelState.AddModelError("", "Something went wrong while saving");
-                return StatusCode(500, ModelState);
-            }
-
-
-            return Ok(obj);
-        }
+        
+        
+        
+        
+        
+         
+         
+         
+         
+         
+        
+        
 
 
     }

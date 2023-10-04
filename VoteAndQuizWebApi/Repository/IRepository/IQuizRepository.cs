@@ -1,4 +1,5 @@
-﻿using VoteAndQuizWebApi.Models;
+﻿using VoteAndQuizWebApi.Dto;
+using VoteAndQuizWebApi.Models;
 
 namespace VoteAndQuizWebApi.Repository.IRepository
 {
