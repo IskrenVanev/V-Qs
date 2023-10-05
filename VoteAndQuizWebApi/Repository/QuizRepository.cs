@@ -28,5 +28,14 @@ namespace VoteAndQuizWebApi.Repository
             var saved = _db.SaveChanges();
             return saved > 0 ? true : false;
         }
+        public bool DeleteQuiz(Quiz quiz)
+        {
+            _db.Remove(quiz);
+            return Save();
+        }
+        public bool QuizExists(int quizId)
+        {
+            return _db.Quizzes.Any(q => q.Id == quizId);
+        }
     }
 }

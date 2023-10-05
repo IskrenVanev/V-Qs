@@ -18,7 +18,7 @@ namespace VoteAndQuizWebApi.Models
         public DateTime? DeletedAt { get; set; }
         public DateTime CreatedAt { get; set; }
         [Required]
-        public DateTime QuizEndDate { get; set; }//date of ending the quiz
+        public DateTime QuizEndDate { get; set; }
         public long quizVotes { get; set; }
 
         [Required]

@@ -8,5 +8,7 @@ namespace VoteAndQuizWebApi.Repository.IRepository
         void Update(Quiz obj);
 
         public bool CreateQuiz(Quiz quiz);
+        public bool QuizExists(int quizId);
+        public bool DeleteQuiz(Quiz quiz);
     }
 }
