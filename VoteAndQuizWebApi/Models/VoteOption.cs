@@ -12,5 +12,8 @@ namespace VoteAndQuizWebApi.Models
 
         [Required]
         public long VoteCount { get; set; }
+        
+        public int VoteId { get; set; }
+        public Vote Vote { get; set; }
     }
 }

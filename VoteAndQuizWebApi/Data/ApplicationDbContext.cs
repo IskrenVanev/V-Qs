@@ -42,7 +42,10 @@ namespace VoteAndQuizWebApi.Data
                 .WithOne(qo => qo.Quiz)
                 .HasForeignKey<QuizOption>(qa => qa.QuizId);
 
-
+            modelBuilder.Entity<Vote>()
+                .HasMany(v => v.Options)
+                .WithOne(vo => vo.Vote)
+                .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);
         }

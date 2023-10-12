@@ -15,5 +15,6 @@ namespace VoteAndQuizWebApi.Repository
         {
             _db.Users.Update(user);
         }
+        
     }
 }
