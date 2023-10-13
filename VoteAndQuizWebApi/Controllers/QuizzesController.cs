@@ -105,6 +105,7 @@ namespace VoteAndQuizWebApi.Controllers
             _unitOfWork.Save();
             return Ok("Successfully updated quiz");
         }
+        
         [HttpPost("Finish/{quizId}")]
         public IActionResult FinishQuiz(int quizId)
         {

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace VoteAndQuizWebApi.Models
 {
@@ -14,6 +15,7 @@ namespace VoteAndQuizWebApi.Models
         public long VoteCount { get; set; }
         
         public int VoteId { get; set; }
+    
         public Vote Vote { get; set; }
     }
 }

@@ -12,6 +12,6 @@ namespace VoteAndQuizWebApi.Repository.IRepository
         public bool VoteExists(int? id);
         public bool DeleteVote(Vote vote);
         public bool FinishVote(int? voteId);
-        public bool UpdateVote(int voteId, VoteOption voteOption);
+        
     }
 }

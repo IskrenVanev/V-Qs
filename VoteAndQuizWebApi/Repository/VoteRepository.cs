@@ -62,26 +62,7 @@ namespace VoteAndQuizWebApi.Repository
 
         }
         
-        public bool UpdateVote(int voteId, VoteOption voteOption)
-        {
-            
-                var vote = _db.Votes.Include(v => v.Options).FirstOrDefault(v => v.Id == voteId);
-                if (vote == null)
-                {
-                    return false;
-                }
-                vote.UpdatedAt = DateTime.UtcNow;
-                vote.IsActive = true;
-                voteOption.VoteCount += 1;
-                vote.voteVotes += 1;
-                _db.Votes.Update(vote);
-                _db.SaveChanges();
-                return true;
-                
-           
-            
-
-        }
+       
         
         
         

@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VoteAndQuizWebApi.Dto;
@@ -16,10 +18,12 @@ namespace VoteAndQuizWebApi.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IVoteRepository _voteRepository;
-        public VotesController(IUnitOfWork unitOfWork, IVoteRepository voteRepository, IMapper mapper)
+        private readonly IVoteOptionRepository _voteOptionRepository;
+        public VotesController(IUnitOfWork unitOfWork, IVoteRepository voteRepository,IVoteOptionRepository voteOptionRepository, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _voteRepository = voteRepository;
+            _voteOptionRepository = voteOptionRepository;
             _mapper = mapper;
          
         }
@@ -78,7 +82,7 @@ namespace VoteAndQuizWebApi.Controllers
         }
         
         [HttpGet("Result/{id}")]
-        public IActionResult GetVoteResult(int? id) //this method returns the option that got most votes.
+        public IActionResult GetVoteResult(int? id) 
         {
             if (id == null)
             {
@@ -97,8 +101,16 @@ namespace VoteAndQuizWebApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
             
-            
-            return Json(result); // Return a view with the vote result
+            // Map the VoteOption to the VoteOptionDTO
+            var voteOptionDto = new VoteOptionDTO
+            {
+                Id = result.Id,
+                Option = result.Option,
+                VoteCount = result.VoteCount,
+                // Map other properties
+            };
+
+            return Json(voteOptionDto);
         }
         
         [HttpDelete("{id}")]
@@ -127,7 +139,7 @@ namespace VoteAndQuizWebApi.Controllers
         
         
         [HttpPost("Finish/{id}")]
-        public  IActionResult Finish(int? id) //TODO: fix the problem with swagger
+        public  IActionResult Finish(int? id) 
         {
             if (id == null)
             {
@@ -157,7 +169,7 @@ namespace VoteAndQuizWebApi.Controllers
                 foreach (var user in _unitOfWork.User.GetAll().ToList())
                 {
                     // Check if the user voted for any of the winning options
-                    //TODO : Implement logic that the user should not be able to vote for more than one option
+                    
                     var userVotedForWinningOption = user.UserVoteAnswers.Any(uva => winningOptions.Any(vo => vo.Option == uva.Option));
                     var theUser =  _unitOfWork.User.Get(u => u.Id == user.Id);
                     if (userVotedForWinningOption)
@@ -186,39 +198,59 @@ namespace VoteAndQuizWebApi.Controllers
             }
         }
         
-        //TODO: Update
+       
         
-        // [HttpPost("Update/{id}{userId}" )]
-        // public IActionResult Update(int? id, int? userId, VoteOption voteOption)
-        // {
-        //     if (id == null)
-        //     {
-        //         return BadRequest();
-        //     }
-        //     var vote = _unitOfWork.Vote.Get(u => u.Id == id);
-        //     if (vote == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //     var loggedInUser = _unitOfWork.User.Get(u => u.AuthId == userId.ToString());
-        //
-        //     if (loggedInUser == null)
-        //     {
-        //         return NotFound(); 
-        //     }
-        //     var update = _voteRepository.UpdateVote((int)id, voteOption);
-        //
-        //
-        //     if (update)
-        //     {
-        //         return Ok("Successfully updated vote");
-        //     }
-        //     else
-        //     {
-        //         ModelState.AddModelError("", "Updating the vote failed."); // Add a model error
-        //         return StatusCode(500, ModelState);
-        //     }
-        // }
+        [HttpPut]
+        public IActionResult Update([FromQuery] int? id,   [FromQuery] int voteOptionId)
+        {
+            if (id == null || voteOptionId == null)
+            {
+                return BadRequest();
+            }
+
+            var vote = _unitOfWork.Vote.Get(u => u.Id == id, "Options");
+            // var loggedInUser = _unitOfWork.User.Get(u => u.AuthId == userId);
+
+            if (vote == null)
+            {
+                Console.WriteLine("here?");
+                return NotFound();
+            }
+
+            // Fetch the VoteOption directly from the context instead of the _unitOfWork
+            var voteOption = _unitOfWork.VoteOption.Get(vo => vo.Id == voteOptionId);
+
+            if (voteOption == null)
+            {
+                return NotFound();
+            }
+
+            if (voteOption.VoteId != vote.Id)
+            {
+                // Ensure the voteOption belongs to the specified vote
+                return BadRequest("Invalid vote option for the specified vote.");
+            }
+            
+            // Use AutoMapper to map your entities to DTOs
+            var voteDTO = _mapper.Map<VoteDTO>(vote);
+            var voteOptionDTO = _mapper.Map<VoteOptionDTO>(voteOption);
+            
+            voteDTO.UpdatedAt = DateTime.UtcNow;
+            voteDTO.IsActive = true;
+            voteDTO.voteVotes += 1;
+            voteOptionDTO.VoteCount += 1;
+            
+            _mapper.Map(voteDTO, vote);
+            _mapper.Map(voteOptionDTO, voteOption);
+            
+            
+            _unitOfWork.VoteOption.Update(voteOption);
+            _unitOfWork.Vote.Update(vote);
+            
+            _unitOfWork.Save();
+
+            return Ok("Successfully updated vote");
+        }
         
     }
 }

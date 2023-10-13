@@ -13,11 +13,16 @@ public class QuizForCreateMethodDTO
     
     public bool IsActive { get; set; } = true;
     public bool IsDeleted { get; set; } = false;
-    public string UpdatedAt { get; set; } = null;
-    public string DeletedAt { get; set; } = null;
+    public DateTime? UpdatedAt { get; private set; }
+   // public string DeletedAt { get; private set; }
     public bool ShowQuiz { get; set; } = true;
     public int quizVotes { get; set; } = 0;
-    
+
+    public QuizForCreateMethodDTO()
+    {
+        UpdatedAt = DateTime.UtcNow; 
+       
+    }
 }
 
 // Creator = TheUser,
