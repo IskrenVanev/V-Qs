@@ -20,7 +20,7 @@ public class QuizForCreateMethodDTO
 
     public QuizForCreateMethodDTO()
     {
-        UpdatedAt = DateTime.UtcNow; 
+        UpdatedAt = DateTime.UtcNow.AddHours(3); 
        
     }
 }

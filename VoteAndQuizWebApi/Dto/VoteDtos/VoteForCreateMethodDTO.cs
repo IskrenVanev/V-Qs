@@ -35,8 +35,8 @@ namespace VoteAndQuizWebApi.Dto.VoteDtos
         {
 
             voteVotes = 0;
-            UpdatedAt = DateTime.UtcNow; // or set it to the default DateTime
-            CreatedAt = DateTime.UtcNow; // or set it to the default DateTime
+            UpdatedAt = DateTime.UtcNow.AddHours(3); // or set it to the default DateTime
+            CreatedAt = DateTime.UtcNow.AddHours(3); // or set it to the default DateTime
             voteVotes = 0; // or set it to the default value
             IsActive = true; // or set it to the default value
             IsDeleted = false; // or set it to the default value

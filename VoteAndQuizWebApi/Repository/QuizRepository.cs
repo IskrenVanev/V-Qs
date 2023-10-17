@@ -30,7 +30,12 @@ namespace VoteAndQuizWebApi.Repository
         }
         public bool DeleteQuiz(Quiz quiz)
         {
-            _db.Remove(quiz);
+            quiz.IsDeleted = true;
+            quiz.DeletedAt = DateTime.UtcNow.AddHours(3);
+            quiz.ShowQuiz = false;
+            quiz.IsActive = false;
+            
+            Update(quiz);
             return Save();
         }
         public bool QuizExists(int quizId)

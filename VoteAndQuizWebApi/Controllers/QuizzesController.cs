@@ -27,7 +27,7 @@ namespace VoteAndQuizWebApi.Controllers
         [HttpGet]
         public IActionResult Index() //Lists all quizzes on the main quiz page
         {
-            var quizzes = _mapper.Map<List<QuizForIndexMethodDTO>>(_unitOfWork.Quiz.GetAll().Include(q => q.Options));
+            var quizzes = _mapper.Map<List<QuizForIndexMethodDTO>>(_unitOfWork.Quiz.GetAll(q => !q.IsDeleted).Include(q => q.Options));
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Json(quizzes);
         }
@@ -38,10 +38,12 @@ namespace VoteAndQuizWebApi.Controllers
             if (id == null)
                 return BadRequest();
 
-
+           
             //Details Method Dto ***
             var quiz = _mapper.Map<QuizForIndexMethodDTO>(_unitOfWork.Quiz.Get(q => q.Id == id, "Options"));
-
+            if (quiz.IsDeleted == true)
+                return BadRequest();
+            
             if (quiz == null)
                 return NotFound();
 
@@ -91,7 +93,7 @@ namespace VoteAndQuizWebApi.Controllers
                 ModelState.AddModelError("", "Something went wrong deleting quiz");
             }
 
-            return NoContent();
+            return Ok("Successfully deleted");
         }
         [HttpPut("{quizId}")]
         public IActionResult UpdateQuiz(int quizId)//updating quiz happens when someone votes for a quiz option
@@ -99,7 +101,9 @@ namespace VoteAndQuizWebApi.Controllers
             var quiz = _unitOfWork.Quiz.Get(q => q.Id == quizId);
             if (quiz == null)
                 return BadRequest(ModelState);
-            quiz.UpdatedAt = DateTime.UtcNow;
+            if (quiz.IsDeleted == true)
+                return BadRequest(ModelState);
+            quiz.UpdatedAt = DateTime.UtcNow.AddHours(3); 
             quiz.quizVotes += 1;
             _unitOfWork.Quiz.Update(quiz);
             _unitOfWork.Save();
@@ -112,12 +116,12 @@ namespace VoteAndQuizWebApi.Controllers
             var quiz = _unitOfWork.Quiz.Get(q => q.Id == quizId);
             if (quiz == null)
                 return BadRequest(ModelState);
-            quiz.QuizEndDate = DateTime.UtcNow;
+            quiz.QuizEndDate = DateTime.UtcNow.AddHours(3);
             quiz.IsActive = false;
             quiz.ShowQuiz = false;
             quiz.IsDeleted = true;
-            quiz.UpdatedAt = DateTime.UtcNow;
-            quiz.DeletedAt = DateTime.UtcNow;
+            quiz.UpdatedAt = DateTime.UtcNow.AddHours(3);
+            quiz.DeletedAt = DateTime.UtcNow.AddHours(3);
             _unitOfWork.Quiz.Update(quiz);
             _unitOfWork.Save();
 

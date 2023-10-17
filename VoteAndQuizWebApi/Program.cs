@@ -46,10 +46,10 @@ app.Run();
 
 
 //TODO: Implement authentication logic
-//TODO: Fix the time. UTC now is 3 hours earlier than the date in Bulgaria(Implement logic for the date in other countries too) in the VotesController.
+//TODO:Implement logic for the date in other countries too in the controllers.
 //TODO: fix the problem with swagger in finish method in the VotesController
 //TODO : Implement logic that the user should not be able to vote for more than one option in finish method in votesController.
-//TODO : When deleting something mark it as deleted rather than actually deleting it.
+
 
 //TODO:Finally when you are ready with everything, learn how to use gRPC and connect your part of the project to Jam's project!!!
 

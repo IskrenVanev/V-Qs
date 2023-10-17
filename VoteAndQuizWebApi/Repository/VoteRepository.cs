@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using VoteAndQuizWebApi.Data;
 using VoteAndQuizWebApi.Models;
 using VoteAndQuizWebApi.Repository.IRepository;
@@ -26,6 +27,7 @@ namespace VoteAndQuizWebApi.Repository
         {
             var vote = _db.Votes.Include(v => v.Options).FirstOrDefault(v => v.Id == voteId);
             if (vote == null) return null; // think about a better way to do this
+           
             var result = vote.Options.MaxBy(o => o.VoteCount);
             return result;
         }
@@ -37,7 +39,11 @@ namespace VoteAndQuizWebApi.Repository
 
         public bool DeleteVote(Vote vote)
         {
-            _db.Remove(vote);
+            vote.IsDeleted = true;
+            vote.DeletedAt = DateTime.UtcNow.AddHours(3);
+            vote.IsActive = false;
+            vote.ShowVote = false;
+            Update(vote);
             return Save();
         }
 
@@ -49,11 +55,11 @@ namespace VoteAndQuizWebApi.Repository
                return false;
            }
           
-           vote.VoteEndDate = DateTime.UtcNow;
+           vote.VoteEndDate = DateTime.UtcNow.AddHours(3);
            vote.IsActive = false;
-           vote.UpdatedAt = DateTime.UtcNow;
+           vote.UpdatedAt = DateTime.UtcNow.AddHours(3);
            vote.ShowVote = false;
-           vote.DeletedAt = DateTime.UtcNow;
+           vote.DeletedAt = DateTime.UtcNow.AddHours(3);
            vote.IsDeleted = true;
            _db.Votes.Update(vote);
            _db.SaveChanges();

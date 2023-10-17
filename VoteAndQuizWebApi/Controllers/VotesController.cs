@@ -30,7 +30,7 @@ namespace VoteAndQuizWebApi.Controllers
         [HttpGet]
         public IActionResult Index() //Lists all votes on the main vote page
         {
-            var votes = _mapper.Map<List<VoteDTO>>(_unitOfWork.Vote.GetAll().Include(v => v.Options));
+            var votes = _mapper.Map<List<VoteDTO>>(_unitOfWork.Vote.GetAll(v => !v.IsDeleted).Include(v => v.Options));
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Json(votes);
         }
@@ -41,11 +41,12 @@ namespace VoteAndQuizWebApi.Controllers
         {
             if (id == null)
                 return BadRequest();
-
+          
 
             //Details Method Dto ***
             var vote = _mapper.Map<VoteDTO>(_unitOfWork.Vote.Get(q => q.Id == id, "Options"));
-
+            if (vote.IsDeleted == true)
+                return BadRequest();
             if (vote == null)
                 return NotFound();
 
@@ -92,7 +93,10 @@ namespace VoteAndQuizWebApi.Controllers
                 return NotFound();
             
             var result =  _voteRepository.GetVoteResult(id.Value);
-
+            if (result.Vote.IsDeleted == true)
+            {
+                return BadRequest();
+            }
             if (result == null)
             {
                 ModelState.AddModelError("", "Vote result not found."); 
@@ -135,9 +139,10 @@ namespace VoteAndQuizWebApi.Controllers
             }
             return Ok("Successfully deleted");
         }
-        
-        
-        
+
+        //TODO: fix the problem with swagger in finish method in the VotesController
+        //TODO : Implement logic that the user should not be able to vote for more than one option in finish method in votesController.
+
         [HttpPost("Finish/{id}")]
         public  IActionResult Finish(int? id) 
         {
@@ -151,7 +156,7 @@ namespace VoteAndQuizWebApi.Controllers
             long maxVoteCount = 0;
             if (finished)
             {
-                var vote = _unitOfWork.Vote.Get(v => v.Id == id);
+                var vote = _unitOfWork.Vote.Get(v => v.Id == id, "Options");
                 
                 if (vote.Options != null && vote.Options.Any())
                 {
@@ -162,16 +167,20 @@ namespace VoteAndQuizWebApi.Controllers
                 {
                     // Handle the case where vote.Options is null or empty
                     ModelState.AddModelError("", "Finishing the vote failed."); // Add a model error
+                    Console.WriteLine("here1");
                     return StatusCode(500, ModelState);
                 }
-                
-                var winningOptions = vote.Options.Where(o => o.VoteCount == maxVoteCount).ToList();
+                //there may be 2 winning options, think about this situation
+                var winningOption = vote.Options.Where(o => o.VoteCount == maxVoteCount);
                 foreach (var user in _unitOfWork.User.GetAll().ToList())
                 {
                     // Check if the user voted for any of the winning options
-                    
-                    var userVotedForWinningOption = user.UserVoteAnswers.Any(uva => winningOptions.Any(vo => vo.Option == uva.Option));
+
+                    var userVotedForWinningOption = user.UserVoteAnswers != null &&
+                               winningOption != null &&
+                               user.UserVoteAnswers.Any(uva => winningOption.Any(vo => vo != null && vo.Option == uva.Option));
                     var theUser =  _unitOfWork.User.Get(u => u.Id == user.Id);
+
                     if (userVotedForWinningOption)
                     {
                         user.Wins++;
@@ -192,7 +201,7 @@ namespace VoteAndQuizWebApi.Controllers
             }
             else
             {
-               
+                Console.WriteLine("here2");
                 ModelState.AddModelError("", "Finishing the vote failed."); // Add a model error
                 return StatusCode(500, ModelState);
             }
@@ -235,7 +244,7 @@ namespace VoteAndQuizWebApi.Controllers
             var voteDTO = _mapper.Map<VoteDTO>(vote);
             var voteOptionDTO = _mapper.Map<VoteOptionDTO>(voteOption);
             
-            voteDTO.UpdatedAt = DateTime.UtcNow;
+            voteDTO.UpdatedAt = DateTime.UtcNow.AddHours(3);
             voteDTO.IsActive = true;
             voteDTO.voteVotes += 1;
             voteOptionDTO.VoteCount += 1;
