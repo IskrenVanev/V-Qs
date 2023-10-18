@@ -45,10 +45,14 @@ app.Run();
 
 
 
-//TODO: Implement authentication logic
-//TODO:Implement logic for the date in other countries too in the controllers.
 //TODO: fix the problem with swagger in finish method in the VotesController
 //TODO : Implement logic that the user should not be able to vote for more than one option in finish method in votesController.
+
+
+
+//TODO: Implement authentication logic
+//TODO:Implement logic for the date in other countries too in the controllers.
+//TODO: Implement voting (When the user vote, the update method for VotesController gets called maybe)
 
 
 //TODO:Finally when you are ready with everything, learn how to use gRPC and connect your part of the project to Jam's project!!!

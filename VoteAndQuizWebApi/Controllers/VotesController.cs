@@ -150,10 +150,9 @@ namespace VoteAndQuizWebApi.Controllers
             {
                 return BadRequest();
             }
-
-            
             var finished =  _voteRepository.FinishVote(id);
             long maxVoteCount = 0;
+            
             if (finished)
             {
                 var vote = _unitOfWork.Vote.Get(v => v.Id == id, "Options");
@@ -167,7 +166,6 @@ namespace VoteAndQuizWebApi.Controllers
                 {
                     // Handle the case where vote.Options is null or empty
                     ModelState.AddModelError("", "Finishing the vote failed."); // Add a model error
-                    Console.WriteLine("here1");
                     return StatusCode(500, ModelState);
                 }
                 //there may be 2 winning options, think about this situation
@@ -184,8 +182,6 @@ namespace VoteAndQuizWebApi.Controllers
                     if (userVotedForWinningOption)
                     {
                         user.Wins++;
-                       
-                       
                         _unitOfWork.User.Update(theUser);
                         _unitOfWork.Save();
                     }
@@ -206,7 +202,24 @@ namespace VoteAndQuizWebApi.Controllers
                 return StatusCode(500, ModelState);
             }
         }
-        
+        // //TODO: Implement a method for voting
+        // [HttpPost("{id}")]
+        // public IActionResult Vote([FromQuery] int? id, [FromQuery] int voteOptionId)
+        // {
+        //     if (id == null)
+        //         return BadRequest();
+        //     
+        //     var vote = _unitOfWork.Vote.Get(u => u.Id == id, "Options");
+        //     
+        //     if (vote == null)
+        //         return NotFound();
+        //     
+        //     var theUser =  _unitOfWork.User.Get(u => u.Id == user.Id);
+        //     
+        //     
+        //     
+        //     
+        // }
        
         
         [HttpPut]
@@ -222,7 +235,7 @@ namespace VoteAndQuizWebApi.Controllers
 
             if (vote == null)
             {
-                Console.WriteLine("here?");
+                
                 return NotFound();
             }
 
