@@ -5,8 +5,8 @@ namespace VoteAndQuizWebApi.Models
 {
     public class User : IdentityUser
     {
-        [Key]
-        public Guid Id { get; set; }
+        
+        
         [Required]
         public string UserName { get; set; }
         [Required]

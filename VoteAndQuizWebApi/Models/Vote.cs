@@ -7,7 +7,7 @@ namespace VoteAndQuizWebApi.Models
     {
         [Key]
         public int Id { get; set; }
-        public Guid CreatorId { get; set; }
+        public string CreatorId { get; set; }
         [ForeignKey("CreatorId")]
         public User Creator { get; set; }
         [Required]

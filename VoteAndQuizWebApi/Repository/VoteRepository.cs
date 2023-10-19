@@ -17,6 +17,7 @@ namespace VoteAndQuizWebApi.Repository
         {
             _db.Votes.Update(obj);
         }
+
         public bool CreateVote(Vote vote)
         {
             _db.Add(vote);

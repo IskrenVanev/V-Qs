@@ -202,32 +202,58 @@ namespace VoteAndQuizWebApi.Controllers
                 return StatusCode(500, ModelState);
             }
         }
-        // //TODO: Implement a method for voting
-        // [HttpPost("{id}")]
-        // public IActionResult Vote([FromQuery] int? id, [FromQuery] int voteOptionId)
-        // {
-        //     if (id == null)
-        //         return BadRequest();
-        //     
-        //     var vote = _unitOfWork.Vote.Get(u => u.Id == id, "Options");
-        //     
-        //     if (vote == null)
-        //         return NotFound();
-        //     
-        //     var theUser =  _unitOfWork.User.Get(u => u.Id == user.Id);
-        //     
-        //     
-        //     
-        //     
-        // }
-       
         
-        [HttpPut]
-        public IActionResult Update([FromQuery] int? id,   [FromQuery] int voteOptionId)
+
+
+        [HttpPost("{id}")]//TODO : Fix this method because it adds new entities to the database for some reason????
+        public IActionResult Vote(int? id, [FromQuery] int voteOptionId)
+        {
+         if (id == null || voteOptionId == null) return BadRequest();
+            
+         var vote = _unitOfWork.Vote.Get(u => u.Id == id, "Options");
+            
+         if (vote == null) return NotFound();
+         var voteOption = _unitOfWork.VoteOption.Get(vo => vo.Id == voteOptionId);
+
+         if (voteOption == null)
+         {
+             return BadRequest();
+         }
+
+         if (voteOption.VoteId != vote.Id)
+         {
+                
+                return BadRequest();
+         }
+
+         var voteDTO = _mapper.Map<VoteDTO>(vote);
+         var voteOptionDTO = _mapper.Map<VoteOptionDTO>(voteOption);
+
+         voteDTO.UpdatedAt = DateTime.UtcNow.AddHours(3);
+         voteDTO.IsActive = true;
+         voteDTO.voteVotes += 1;
+         voteOptionDTO.VoteCount += 1;
+
+         _mapper.Map(voteDTO, vote);
+        _mapper.Map(voteOptionDTO, voteOption);
+
+
+         _unitOfWork.VoteOption.Update(voteOption);
+         _unitOfWork.Vote.Update(vote);
+
+         _unitOfWork.Save();
+
+         return Ok("Successfully voted");
+
+        }
+
+        
+
+        private bool Update(int? id, int? voteOptionId)
         {
             if (id == null || voteOptionId == null)
             {
-                return BadRequest();
+                return false;
             }
 
             var vote = _unitOfWork.Vote.Get(u => u.Id == id, "Options");
@@ -235,8 +261,7 @@ namespace VoteAndQuizWebApi.Controllers
 
             if (vote == null)
             {
-                
-                return NotFound();
+                return false;
             }
 
             // Fetch the VoteOption directly from the context instead of the _unitOfWork
@@ -244,34 +269,35 @@ namespace VoteAndQuizWebApi.Controllers
 
             if (voteOption == null)
             {
-                return NotFound();
+                return false;
             }
 
             if (voteOption.VoteId != vote.Id)
             {
                 // Ensure the voteOption belongs to the specified vote
-                return BadRequest("Invalid vote option for the specified vote.");
+                //  return BadRequest("Invalid vote option for the specified vote.");
+                return false;
             }
-            
+
             // Use AutoMapper to map your entities to DTOs
             var voteDTO = _mapper.Map<VoteDTO>(vote);
             var voteOptionDTO = _mapper.Map<VoteOptionDTO>(voteOption);
-            
+
             voteDTO.UpdatedAt = DateTime.UtcNow.AddHours(3);
             voteDTO.IsActive = true;
             voteDTO.voteVotes += 1;
             voteOptionDTO.VoteCount += 1;
-            
-            _mapper.Map(voteDTO, vote);
-            _mapper.Map(voteOptionDTO, voteOption);
-            
-            
+
+           // _mapper.Map(voteDTO, vote);
+          //  _mapper.Map(voteOptionDTO, voteOption);
+
+
             _unitOfWork.VoteOption.Update(voteOption);
             _unitOfWork.Vote.Update(vote);
-            
+
             _unitOfWork.Save();
 
-            return Ok("Successfully updated vote");
+            return true;
         }
         
     }

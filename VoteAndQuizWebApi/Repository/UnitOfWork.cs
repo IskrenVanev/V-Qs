@@ -27,7 +27,7 @@ namespace VoteAndQuizWebApi.Repository
             Quiz = new QuizRepository(_db);
             Vote = new VoteRepository(_db);
             QuizOption = new QuizOptionRepository(_db);
-            VoteOption = new VoteOptionRepository(_db);
+            VoteOption = new VoteOptionRepository(_db /*, this*/);
             UserVoteAnswer = new UserVoteAnswerRepository(_db);
             UserQuizAnswer = new UserQuizAnswerRepository(_db);
 

@@ -1,16 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using VoteAndQuizWebApi.Models;
 
 namespace VoteAndQuizWebApi.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
 
         public DbSet<Quiz> Quizzes { get; set; }
-        public DbSet<User> Users { get; set; }
+       // public DbSet<User> Users { get; set; }
         public DbSet<Vote> Votes { get; set; }
         public DbSet<QuizOption> QuizOptions { get; set; }
         public DbSet<VoteOption> VoteOptions { get; set; }
@@ -21,15 +23,18 @@ namespace VoteAndQuizWebApi.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)//TODO:Fix entity relations
         {
 
+           // modelBuilder.Entity<User>().HasKey(u => u.CustomUserId);
+            // modelBuilder.Entity<User>()
+            //     .Property(u => u.Id)
+            //     .HasConversion(
+            //         v => v.ToByteArray(),
+            //         v => new Guid(v)
+            //     );
 
-            modelBuilder.Entity<User>()
-                .Property(u => u.Id)
-                .HasConversion(
-                    v => v.ToByteArray(),
-                    v => new Guid(v)
-                );
-
-
+            modelBuilder.Entity<Quiz>()
+                .HasOne(q => q.Creator)
+                .WithMany()
+                .HasForeignKey(q => q.CreatorId);
 
             modelBuilder.Entity<Quiz>()
                 .HasMany(q => q.Options)
@@ -54,7 +59,7 @@ namespace VoteAndQuizWebApi.Data
         {
             var newUser = new User
             {
-                Id = Guid.NewGuid(), // Generate a new unique ID for the user
+               // CustomUserId = Guid.NewGuid(), // Generate a new unique ID for the user
                 UserName = "Username", // Set the username
                 AuthId = "AuthId", // Set the AuthId
                 Wins = 0, // Set initial wins count
@@ -69,7 +74,7 @@ namespace VoteAndQuizWebApi.Data
                     new Quiz
                     {
                         Name = "Quiz 1",
-                        CreatorId =newUser.Id,
+                        //CreatorId =newUser.CustomUserId,
                         Creator = newUser,
                         CreatedAt = DateTime.Now,
                         QuizEndDate = DateTime.Now.AddDays(7),
@@ -102,7 +107,7 @@ namespace VoteAndQuizWebApi.Data
                     new Vote
                     {
                         Name = "Vote 1",
-                        CreatorId = newUser.Id,
+                        //CreatorId = newUser.CustomUserId,
                         Creator = newUser,
                         CreatedAt = DateTime.Now,
                         VoteEndDate = DateTime.Now.AddDays(7),
