@@ -14,6 +14,7 @@ namespace VoteAndQuizWebApi.Repository
         }
         public void Update(VoteOption obj)
         {
+           
             _db.VoteOptions.Update(obj);
         }
         public void Attach(VoteOption obj)
@@ -22,7 +23,7 @@ namespace VoteAndQuizWebApi.Repository
             _db.Attach(obj);
         }
 
-        public void Detach(VoteOption entity)
+        public  void Detach(VoteOption entity)
         {
             _db.Entry(entity).State = EntityState.Detached;
         }

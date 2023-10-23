@@ -15,9 +15,13 @@ namespace VoteAndQuizWebApi.Repository
         }
         public void Update(Vote obj)
         {
+            //_db.Entry(obj).State = EntityState.Detached;
             _db.Votes.Update(obj);
         }
-
+        public void Detach(Vote entity)
+        {
+            _db.Entry(entity).State = EntityState.Detached;
+        }
         public bool CreateVote(Vote vote)
         {
             _db.Add(vote);

@@ -205,15 +205,15 @@ namespace VoteAndQuizWebApi.Controllers
         
 
 
-        [HttpPost("{id}")]//TODO : Fix this method because it adds new entities to the database for some reason????
-        public IActionResult Vote(int? id, [FromQuery] int voteOptionId)
+        [HttpPost("Vote/{id}/{voteOptionId}")]//TODO : Fix this method because it adds new entities to the database for some reason????w
+        public IActionResult Vote(int? id, int voteOptionId)
         {
          if (id == null || voteOptionId == null) return BadRequest();
             
-         var vote = _unitOfWork.Vote.Get(u => u.Id == id, "Options");
+         var vote = _unitOfWork.Vote.Get(u => u.Id == id, "Options", true);//ITS TRACKED !!!!!!!!!!!!!!!!!!!
             
          if (vote == null) return NotFound();
-         var voteOption = _unitOfWork.VoteOption.Get(vo => vo.Id == voteOptionId);
+         var voteOption = _unitOfWork.VoteOption.Get(vo => vo.Id == voteOptionId, null,true);
 
          if (voteOption == null)
          {
@@ -226,19 +226,17 @@ namespace VoteAndQuizWebApi.Controllers
                 return BadRequest();
          }
 
-         var voteDTO = _mapper.Map<VoteDTO>(vote);
-         var voteOptionDTO = _mapper.Map<VoteOptionDTO>(voteOption);
-
-         voteDTO.UpdatedAt = DateTime.UtcNow.AddHours(3);
-         voteDTO.IsActive = true;
-         voteDTO.voteVotes += 1;
-         voteOptionDTO.VoteCount += 1;
-
-         _mapper.Map(voteDTO, vote);
-        _mapper.Map(voteOptionDTO, voteOption);
+        
+        // _unitOfWork.VoteOption.Detach(voteOption);
+         vote.UpdatedAt = DateTime.UtcNow.AddHours(3);
+         vote.IsActive = true;
+         vote.voteVotes += 1;
+         voteOption.VoteCount += 1;
 
 
-         _unitOfWork.VoteOption.Update(voteOption);
+         
+            //trackvash gi dokato ne gi updatenesh i predi da save-nesh gi untrackvash!!!!!!!!
+            _unitOfWork.VoteOption.Update(voteOption);
          _unitOfWork.Vote.Update(vote);
 
          _unitOfWork.Save();
@@ -249,56 +247,56 @@ namespace VoteAndQuizWebApi.Controllers
 
         
 
-        private bool Update(int? id, int? voteOptionId)
-        {
-            if (id == null || voteOptionId == null)
-            {
-                return false;
-            }
+        //private bool Update(int? id, int? voteOptionId)
+        //{
+        //    if (id == null || voteOptionId == null)
+        //    {
+        //        return false;
+        //    }
 
-            var vote = _unitOfWork.Vote.Get(u => u.Id == id, "Options");
-            // var loggedInUser = _unitOfWork.User.Get(u => u.AuthId == userId);
+        //    var vote = _unitOfWork.Vote.Get(u => u.Id == id, "Options");
+        //    // var loggedInUser = _unitOfWork.User.Get(u => u.AuthId == userId);
 
-            if (vote == null)
-            {
-                return false;
-            }
+        //    if (vote == null)
+        //    {
+        //        return false;
+        //    }
 
-            // Fetch the VoteOption directly from the context instead of the _unitOfWork
-            var voteOption = _unitOfWork.VoteOption.Get(vo => vo.Id == voteOptionId);
+        //    // Fetch the VoteOption directly from the context instead of the _unitOfWork
+        //    var voteOption = _unitOfWork.VoteOption.Get(vo => vo.Id == voteOptionId);
 
-            if (voteOption == null)
-            {
-                return false;
-            }
+        //    if (voteOption == null)
+        //    {
+        //        return false;
+        //    }
 
-            if (voteOption.VoteId != vote.Id)
-            {
-                // Ensure the voteOption belongs to the specified vote
-                //  return BadRequest("Invalid vote option for the specified vote.");
-                return false;
-            }
+        //    if (voteOption.VoteId != vote.Id)
+        //    {
+        //        // Ensure the voteOption belongs to the specified vote
+        //        //  return BadRequest("Invalid vote option for the specified vote.");
+        //        return false;
+        //    }
 
-            // Use AutoMapper to map your entities to DTOs
-            var voteDTO = _mapper.Map<VoteDTO>(vote);
-            var voteOptionDTO = _mapper.Map<VoteOptionDTO>(voteOption);
+        //    // Use AutoMapper to map your entities to DTOs
+        //    var voteDTO = _mapper.Map<VoteDTO>(vote);
+        //    var voteOptionDTO = _mapper.Map<VoteOptionDTO>(voteOption);
 
-            voteDTO.UpdatedAt = DateTime.UtcNow.AddHours(3);
-            voteDTO.IsActive = true;
-            voteDTO.voteVotes += 1;
-            voteOptionDTO.VoteCount += 1;
+        //    voteDTO.UpdatedAt = DateTime.UtcNow.AddHours(3);
+        //    voteDTO.IsActive = true;
+        //    voteDTO.voteVotes += 1;
+        //    voteOptionDTO.VoteCount += 1;
 
-           // _mapper.Map(voteDTO, vote);
-          //  _mapper.Map(voteOptionDTO, voteOption);
+        //   // _mapper.Map(voteDTO, vote);
+        //  //  _mapper.Map(voteOptionDTO, voteOption);
 
 
-            _unitOfWork.VoteOption.Update(voteOption);
-            _unitOfWork.Vote.Update(vote);
+        //    _unitOfWork.VoteOption.Update(voteOption);
+        //    _unitOfWork.Vote.Update(vote);
 
-            _unitOfWork.Save();
+        //    _unitOfWork.Save();
 
-            return true;
-        }
+        //    return true;
+        //}
         
     }
 }
