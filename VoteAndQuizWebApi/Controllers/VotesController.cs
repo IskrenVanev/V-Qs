@@ -205,15 +205,15 @@ namespace VoteAndQuizWebApi.Controllers
         
 
 
-        [HttpPost("Vote/{id}/{voteOptionId}")]//TODO : Fix this method because it adds new entities to the database for some reason????w
+        [HttpPost("Vote/{id}/{voteOptionId}")]
         public IActionResult Vote(int? id, int voteOptionId)
         {
          if (id == null || voteOptionId == null) return BadRequest();
             
-         var vote = _unitOfWork.Vote.Get(u => u.Id == id, "Options", true);//ITS TRACKED !!!!!!!!!!!!!!!!!!!
+         var vote = _unitOfWork.Vote.Get(u => u.Id == id, "Options", true);
             
          if (vote == null) return NotFound();
-         var voteOption = _unitOfWork.VoteOption.Get(vo => vo.Id == voteOptionId, null,true);
+         var voteOption = _unitOfWork.VoteOption.Get(vo => vo.Id == voteOptionId, null, true);
 
          if (voteOption == null)
          {
@@ -224,23 +224,17 @@ namespace VoteAndQuizWebApi.Controllers
          {
                 
                 return BadRequest();
-         }
-
-        
-        // _unitOfWork.VoteOption.Detach(voteOption);
-         vote.UpdatedAt = DateTime.UtcNow.AddHours(3);
-         vote.IsActive = true;
-         vote.voteVotes += 1;
-         voteOption.VoteCount += 1;
-
-
+         }         
+            vote.UpdatedAt = DateTime.UtcNow.AddHours(3);
+            vote.IsActive = true;
+            vote.voteVotes += 1;
          
-            //trackvash gi dokato ne gi updatenesh i predi da save-nesh gi untrackvash!!!!!!!!
-            _unitOfWork.VoteOption.Update(voteOption);
-         _unitOfWork.Vote.Update(vote);
+            voteOption.VoteCount += 1;
+            _unitOfWork.Vote.Modify(vote);
+            _unitOfWork.VoteOption.Modify(voteOption);
 
-         _unitOfWork.Save();
-
+            _unitOfWork.Vote.Save();
+            _unitOfWork.VoteOption.Save();
          return Ok("Successfully voted");
 
         }

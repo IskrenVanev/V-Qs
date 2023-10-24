@@ -21,8 +21,18 @@ namespace VoteAndQuizWebApi.Repository
         {
             // Attach the entity to the context
             _db.Attach(obj);
+           
         }
+        public void Modify(VoteOption entity)
+        {
+            _db.Entry(entity).State = EntityState.Modified;
 
+        }
+        public bool Save()
+        {
+            var saved = _db.SaveChanges();
+            return saved > 0 ? true : false;
+        }
         public  void Detach(VoteOption entity)
         {
             _db.Entry(entity).State = EntityState.Detached;
