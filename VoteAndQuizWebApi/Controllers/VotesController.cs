@@ -144,35 +144,48 @@ namespace VoteAndQuizWebApi.Controllers
             return Ok("Successfully deleted");
         }
 
-        //TODO: fix the problem with swagger in finish method in the VotesController
-        //TODO : Implement logic that the user should not be able to vote for more than one option in finish method in votesController.
+        
+        //TODO: fix the problem with swagger in finish method in the VotesController. It does not add the wins/loses to the user that has logged in
+
+
 
         [HttpPost("Finish/{id}")]
+        [Authorize]
         public  IActionResult Finish(int? id) 
         {
             if (id == null)
             {
                 return BadRequest();
             }
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);//take the id of the user who clicked on this endpoint
+            var vote = _unitOfWork.Vote.Get(v => v.Id == id, "Options");
+            if (userId != vote.CreatorId)//this actually works
+            {
+                return BadRequest("You can't finish this vote because you are not the creator!");
+            }
+
+
             var finished =  _voteRepository.FinishVote(id);
             long maxVoteCount = 0;
             
             if (finished)
             {
-                var vote = _unitOfWork.Vote.Get(v => v.Id == id, "Options");
+           
                 
                 if (vote.Options != null && vote.Options.Any())
                 {
                     maxVoteCount = vote.Options.Max(o => o.VoteCount);
-                    // Your logic when maxVoteCount is not null
+                    
                 }
                 else
                 {
-                    // Handle the case where vote.Options is null or empty
-                    ModelState.AddModelError("", "Finishing the vote failed."); // Add a model error
+                    
+                    ModelState.AddModelError("", "Finishing the vote failed."); 
                     return StatusCode(500, ModelState);
                 }
-                //there may be 2 winning options, think about this situation
+
+
+               
                 var winningOption = vote.Options.Where(o => o.VoteCount == maxVoteCount);
                 foreach (var user in _unitOfWork.User.GetAll().ToList())
                 {
@@ -181,7 +194,7 @@ namespace VoteAndQuizWebApi.Controllers
                     var userVotedForWinningOption = user.UserVoteAnswers != null &&
                                winningOption != null &&
                                user.UserVoteAnswers.Any(uva => winningOption.Any(vo => vo != null && vo.Option == uva.Option));
-                    //var theUser =  _unitOfWork.User.Get(u => u.Id == user.Id);
+               
 
                     if (userVotedForWinningOption)
                     {

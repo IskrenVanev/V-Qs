@@ -64,7 +64,7 @@ app.Run();
 
 
 //TODO: fix the problem with swagger in finish method in the VotesController. It does not add the wins/loses to the user that has logged in
-//TODO : Implement logic that the user should not be able to vote for more than one option in vote method in votesController.
+//TODO: Implement authentication for creating a vote and assign Creator property to be the logged in user, then you can test the finish method.
 
 
 

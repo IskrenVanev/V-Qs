@@ -12,7 +12,7 @@ using VoteAndQuizWebApi.Data;
 namespace VoteAndQuizWebApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231026095335_InitialMigration")]
+    [Migration("20231026160535_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
