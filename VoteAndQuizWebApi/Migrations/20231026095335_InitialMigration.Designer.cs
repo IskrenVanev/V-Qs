@@ -12,7 +12,7 @@ using VoteAndQuizWebApi.Data;
 namespace VoteAndQuizWebApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231024055641_InitialMigration")]
+    [Migration("20231026095335_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -345,11 +345,17 @@ namespace VoteAndQuizWebApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("VoteId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("VoteId");
 
                     b.ToTable("UserVoteAnswers");
                 });
@@ -533,9 +539,21 @@ namespace VoteAndQuizWebApi.Migrations
 
             modelBuilder.Entity("VoteAndQuizWebApi.Models.UserVoteAnswer", b =>
                 {
-                    b.HasOne("VoteAndQuizWebApi.Models.User", null)
+                    b.HasOne("VoteAndQuizWebApi.Models.User", "User")
                         .WithMany("UserVoteAnswers")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("VoteAndQuizWebApi.Models.Vote", "Vote")
+                        .WithMany("UserVoteAnswers")
+                        .HasForeignKey("VoteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("Vote");
                 });
 
             modelBuilder.Entity("VoteAndQuizWebApi.Models.Vote", b =>
@@ -571,6 +589,8 @@ namespace VoteAndQuizWebApi.Migrations
             modelBuilder.Entity("VoteAndQuizWebApi.Models.Vote", b =>
                 {
                     b.Navigation("Options");
+
+                    b.Navigation("UserVoteAnswers");
                 });
 
             modelBuilder.Entity("VoteAndQuizWebApi.Models.User", b =>

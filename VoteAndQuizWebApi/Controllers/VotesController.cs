@@ -1,6 +1,9 @@
-﻿using System.Text.Json;
+﻿using System.Security.Claims;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VoteAndQuizWebApi.Dto;
@@ -19,13 +22,14 @@ namespace VoteAndQuizWebApi.Controllers
         private readonly IMapper _mapper;
         private readonly IVoteRepository _voteRepository;
         private readonly IVoteOptionRepository _voteOptionRepository;
-        public VotesController(IUnitOfWork unitOfWork, IVoteRepository voteRepository,IVoteOptionRepository voteOptionRepository, IMapper mapper)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public VotesController(IUnitOfWork unitOfWork, IVoteRepository voteRepository,IVoteOptionRepository voteOptionRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _unitOfWork = unitOfWork;
             _voteRepository = voteRepository;
             _voteOptionRepository = voteOptionRepository;
             _mapper = mapper;
-         
+            _httpContextAccessor = httpContextAccessor;
         }
         [HttpGet]
         public IActionResult Index() //Lists all votes on the main vote page
@@ -177,17 +181,17 @@ namespace VoteAndQuizWebApi.Controllers
                     var userVotedForWinningOption = user.UserVoteAnswers != null &&
                                winningOption != null &&
                                user.UserVoteAnswers.Any(uva => winningOption.Any(vo => vo != null && vo.Option == uva.Option));
-                    var theUser =  _unitOfWork.User.Get(u => u.Id == user.Id);
+                    //var theUser =  _unitOfWork.User.Get(u => u.Id == user.Id);
 
                     if (userVotedForWinningOption)
                     {
                         user.Wins++;
-                        _unitOfWork.User.Update(theUser);
+                        _unitOfWork.User.Update(user);
                         _unitOfWork.Save();
                     }
                     else
                     {
-                        _unitOfWork.User.Update(theUser);
+                        _unitOfWork.User.Update(user);
                         _unitOfWork.Save();
                         user.Loses++;
                     }
@@ -206,91 +210,53 @@ namespace VoteAndQuizWebApi.Controllers
 
 
         [HttpPost("Vote/{id}/{voteOptionId}")]
+        [Authorize]
         public IActionResult Vote(int? id, int voteOptionId)
         {
          if (id == null || voteOptionId == null) return BadRequest();
-            
+         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
          var vote = _unitOfWork.Vote.Get(u => u.Id == id, "Options", true);
-            
-         if (vote == null) return NotFound();
+            if (vote == null) return NotFound();
          var voteOption = _unitOfWork.VoteOption.Get(vo => vo.Id == voteOptionId, null, true);
 
-         if (voteOption == null)
-         {
-             return BadRequest();
-         }
+             if (voteOption == null)
+             {
+                 return BadRequest();
+             }
 
-         if (voteOption.VoteId != vote.Id)
-         {
-                
-                return BadRequest();
-         }         
+             if (voteOption.VoteId != vote.Id)
+             {
+
+                 return BadRequest();
+             }
+
+             var hasVoted = _unitOfWork.UserVoteAnswer.Get(uva => uva.VoteId == vote.Id && uva.UserId == userId);
+             if (hasVoted != null)
+             {
+                 return BadRequest("You have already voted for this vote.");
+             }
             vote.UpdatedAt = DateTime.UtcNow.AddHours(3);
             vote.IsActive = true;
             vote.voteVotes += 1;
-         
             voteOption.VoteCount += 1;
             _unitOfWork.Vote.Modify(vote);
             _unitOfWork.VoteOption.Modify(voteOption);
-
             _unitOfWork.Vote.Save();
             _unitOfWork.VoteOption.Save();
-         return Ok("Successfully voted");
+            var userVoteAnswer = new UserVoteAnswer
+            {
+                Option = voteOption.Option,
+                UserId = userId,
+                VoteId = vote.Id
+
+            };
+            _unitOfWork.UserVoteAnswer.Add(userVoteAnswer);
+            _unitOfWork.UserVoteAnswer.Save();
+            return Ok("Successfully voted");
 
         }
 
         
 
-        //private bool Update(int? id, int? voteOptionId)
-        //{
-        //    if (id == null || voteOptionId == null)
-        //    {
-        //        return false;
-        //    }
-
-        //    var vote = _unitOfWork.Vote.Get(u => u.Id == id, "Options");
-        //    // var loggedInUser = _unitOfWork.User.Get(u => u.AuthId == userId);
-
-        //    if (vote == null)
-        //    {
-        //        return false;
-        //    }
-
-        //    // Fetch the VoteOption directly from the context instead of the _unitOfWork
-        //    var voteOption = _unitOfWork.VoteOption.Get(vo => vo.Id == voteOptionId);
-
-        //    if (voteOption == null)
-        //    {
-        //        return false;
-        //    }
-
-        //    if (voteOption.VoteId != vote.Id)
-        //    {
-        //        // Ensure the voteOption belongs to the specified vote
-        //        //  return BadRequest("Invalid vote option for the specified vote.");
-        //        return false;
-        //    }
-
-        //    // Use AutoMapper to map your entities to DTOs
-        //    var voteDTO = _mapper.Map<VoteDTO>(vote);
-        //    var voteOptionDTO = _mapper.Map<VoteOptionDTO>(voteOption);
-
-        //    voteDTO.UpdatedAt = DateTime.UtcNow.AddHours(3);
-        //    voteDTO.IsActive = true;
-        //    voteDTO.voteVotes += 1;
-        //    voteOptionDTO.VoteCount += 1;
-
-        //   // _mapper.Map(voteDTO, vote);
-        //  //  _mapper.Map(voteOptionDTO, voteOption);
-
-
-        //    _unitOfWork.VoteOption.Update(voteOption);
-        //    _unitOfWork.Vote.Update(vote);
-
-        //    _unitOfWork.Save();
-
-        //    return true;
-        //}
-        
     }
 }

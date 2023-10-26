@@ -15,5 +15,10 @@ namespace VoteAndQuizWebApi.Repository
         {
             _db.UserVoteAnswers.Update(obj);
         }
+        public bool Save()
+        {
+            var saved = _db.SaveChanges();
+            return saved > 0 ? true : false;
+        }
     }
 }

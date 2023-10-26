@@ -190,25 +190,6 @@ namespace VoteAndQuizWebApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserVoteAnswers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Option = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserVoteAnswers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserVoteAnswers_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Votes",
                 columns: table => new
                 {
@@ -280,6 +261,33 @@ namespace VoteAndQuizWebApi.Migrations
                         principalTable: "Quizzes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserVoteAnswers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Option = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    VoteId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserVoteAnswers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserVoteAnswers_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserVoteAnswers_Votes_VoteId",
+                        column: x => x.VoteId,
+                        principalTable: "Votes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -367,6 +375,11 @@ namespace VoteAndQuizWebApi.Migrations
                 name: "IX_UserVoteAnswers_UserId",
                 table: "UserVoteAnswers",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserVoteAnswers_VoteId",
+                table: "UserVoteAnswers",
+                column: "VoteId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_VoteOptions_VoteId",

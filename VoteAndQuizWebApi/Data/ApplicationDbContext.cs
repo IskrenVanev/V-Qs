@@ -51,7 +51,11 @@ namespace VoteAndQuizWebApi.Data
                 .HasMany(v => v.Options)
                 .WithOne(vo => vo.Vote)
                 .OnDelete(DeleteBehavior.Cascade);
-
+            modelBuilder.Entity<UserVoteAnswer>()
+                .HasOne(uva => uva.Vote)
+                .WithMany(v => v.UserVoteAnswers)
+                .HasForeignKey(uva => uva.VoteId)
+                .OnDelete(DeleteBehavior.Restrict);
             base.OnModelCreating(modelBuilder);
         }
 

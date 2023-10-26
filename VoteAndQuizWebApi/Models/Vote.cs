@@ -21,6 +21,7 @@ namespace VoteAndQuizWebApi.Models
 
 
         public ICollection<VoteOption> Options { get; set; }
+        public ICollection<UserVoteAnswer> UserVoteAnswers { get; set; }
 
         public long voteVotes { get; set; }
         [Required]

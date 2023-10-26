@@ -19,8 +19,16 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
         .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+builder.Services.AddAuthorization();
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+//builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+builder.Services.AddIdentityApiEndpoints<IdentityUser>().AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = $"/Identity/Account/Login";
+    options.LogoutPath = $"/Identity/Account/Logout";
+    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+});
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IQuizRepository, QuizRepository>();
@@ -36,11 +44,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.MapIdentityApi<IdentityUser>();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapRazorPages();
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
@@ -53,15 +63,20 @@ app.Run();
 
 
 
-//TODO: fix the problem with swagger in finish method in the VotesController
-//TODO : Implement logic that the user should not be able to vote for more than one option in finish method in votesController.
+//TODO: fix the problem with swagger in finish method in the VotesController. It does not add the wins/loses to the user that has logged in
+//TODO : Implement logic that the user should not be able to vote for more than one option in vote method in votesController.
 
 
 
-//TODO: Implement authentication logic. 
-//TODO:Implement logic for the date in other countries too in the controllers.
-//TODO: Implement voting (When the user vote, the update method for VotesController gets called maybe)
 
 
 //TODO:Finally when you are ready with everything, learn how to use gRPC and connect your part of the project to Jam's project!!!
 
+
+
+
+
+
+
+
+//TODO:Implement logic for the date in other countries too in the controllers.
