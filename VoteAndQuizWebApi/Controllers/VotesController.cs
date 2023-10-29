@@ -65,6 +65,8 @@ namespace VoteAndQuizWebApi.Controllers
             if (vote == null)
                 return BadRequest(ModelState);
 
+
+
             var newVote = _mapper.Map<Vote>(vote);
 
             if (!ModelState.IsValid)
