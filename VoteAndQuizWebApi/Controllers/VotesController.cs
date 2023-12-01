@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using VoteAndQuizWebApi.Data;
 using VoteAndQuizWebApi.Dto;
 using VoteAndQuizWebApi.Dto.VoteDtos;
 using VoteAndQuizWebApi.Models;
@@ -23,13 +24,17 @@ namespace VoteAndQuizWebApi.Controllers
         private readonly IVoteRepository _voteRepository;
         private readonly IVoteOptionRepository _voteOptionRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public VotesController(IUnitOfWork unitOfWork, IVoteRepository voteRepository,IVoteOptionRepository voteOptionRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        private readonly ApplicationDbContext _db;
+        private readonly UserManager<User> _userManager;
+        public VotesController(IUnitOfWork unitOfWork, IVoteRepository voteRepository,IVoteOptionRepository voteOptionRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor, ApplicationDbContext db, UserManager<User> userManager)
         {
             _unitOfWork = unitOfWork;
+            _db = db;
             _voteRepository = voteRepository;
             _voteOptionRepository = voteOptionRepository;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
+            _userManager = userManager;
         }
         [HttpGet]
         public IActionResult Index() //Lists all votes on the main vote page
@@ -59,6 +64,7 @@ namespace VoteAndQuizWebApi.Controllers
         
 
         [HttpPost]
+        [Authorize]
         public IActionResult Create([FromBody] VoteForCreateMethodDTO vote)
         //implement some kind of authentication so that when you create vote the vote's property - creator will be populated !!
         {
@@ -68,6 +74,14 @@ namespace VoteAndQuizWebApi.Controllers
 
 
             var newVote = _mapper.Map<Vote>(vote);
+            //newVote.CreatorId = user.Id;
+
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            User user = _unitOfWork.User.Get(u => u.Id == userId, "UserVoteAnswers");
+
+            if (user == null) return Unauthorized();
+
+            newVote.Creator = user;
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -221,17 +235,27 @@ namespace VoteAndQuizWebApi.Controllers
                 return StatusCode(500, ModelState);
             }
         }
-        
 
 
+        //TODO: finish this method, it should add the votes that the user voted for in the user's UserVoteAnswers
         [HttpPost("Vote/{id}/{voteOptionId}")]
         [Authorize]
-        public IActionResult Vote(int? id, int voteOptionId)
+        public async Task<IActionResult> Vote(int? id, int voteOptionId)
         {
          if (id == null || voteOptionId == null) return BadRequest();
-         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-         var vote = _unitOfWork.Vote.Get(u => u.Id == id, "Options", true);
+
+         string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+         User user = _unitOfWork.User.Get(u => u.Id == userId, "UserVoteAnswers");
+
+            if (user == null) return BadRequest();
+            
+         
+
+            
+            
+            var vote = _unitOfWork.Vote.Get(u => u.Id == id, "Options", true);
             if (vote == null) return NotFound();
+
          var voteOption = _unitOfWork.VoteOption.Get(vo => vo.Id == voteOptionId, null, true);
 
              if (voteOption == null)
@@ -246,18 +270,24 @@ namespace VoteAndQuizWebApi.Controllers
              }
 
              var hasVoted = _unitOfWork.UserVoteAnswer.Get(uva => uva.VoteId == vote.Id && uva.UserId == userId);
+
              if (hasVoted != null)
              {
                  return BadRequest("You have already voted for this vote.");
              }
+
             vote.UpdatedAt = DateTime.UtcNow.AddHours(3);
             vote.IsActive = true;
             vote.voteVotes += 1;
             voteOption.VoteCount += 1;
+
+          
+
             _unitOfWork.Vote.Modify(vote);
             _unitOfWork.VoteOption.Modify(voteOption);
             _unitOfWork.Vote.Save();
             _unitOfWork.VoteOption.Save();
+
             var userVoteAnswer = new UserVoteAnswer
             {
                 Option = voteOption.Option,
@@ -265,6 +295,10 @@ namespace VoteAndQuizWebApi.Controllers
                 VoteId = vote.Id
 
             };
+           // user.
+            
+            _unitOfWork.User.Save();
+
             _unitOfWork.UserVoteAnswer.Add(userVoteAnswer);
             _unitOfWork.UserVoteAnswer.Save();
             return Ok("Successfully voted");

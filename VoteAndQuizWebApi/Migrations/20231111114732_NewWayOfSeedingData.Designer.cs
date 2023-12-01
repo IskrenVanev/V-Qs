@@ -12,8 +12,8 @@ using VoteAndQuizWebApi.Data;
 namespace VoteAndQuizWebApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231026160535_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20231111114732_NewWayOfSeedingData")]
+    partial class NewWayOfSeedingData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -435,10 +435,6 @@ namespace VoteAndQuizWebApi.Migrations
             modelBuilder.Entity("VoteAndQuizWebApi.Models.User", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<string>("AuthId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Loses")
                         .HasColumnType("int");

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi24Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\VoteAndQuizWebApi.csproj": {}
+    "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\VoteAndQuizWebApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi24Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\VoteAndQuizWebApi.csproj": {
+    "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\VoteAndQuizWebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi24Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\VoteAndQuizWebApi.csproj",
+        "projectUniqueName": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\VoteAndQuizWebApi.csproj",
         "projectName": "VoteAndQuizWebApi",
-        "projectPath": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi24Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\VoteAndQuizWebApi.csproj",
+        "projectPath": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\VoteAndQuizWebApi.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi24Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\obj\\",
+        "outputPath": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

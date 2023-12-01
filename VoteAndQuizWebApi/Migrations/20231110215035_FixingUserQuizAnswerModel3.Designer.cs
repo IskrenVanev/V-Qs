@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VoteAndQuizWebApi.Data;
 
@@ -11,9 +12,11 @@ using VoteAndQuizWebApi.Data;
 namespace VoteAndQuizWebApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231110215035_FixingUserQuizAnswerModel3")]
+    partial class FixingUserQuizAnswerModel3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -318,6 +321,7 @@ namespace VoteAndQuizWebApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -520,14 +524,18 @@ namespace VoteAndQuizWebApi.Migrations
                     b.HasOne("VoteAndQuizWebApi.Models.Quiz", "Quiz")
                         .WithMany("Options")
                         .HasForeignKey("QuizId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("VoteAndQuizWebApi.Models.User", "User")
+                        .WithMany("UserQuizAnswers")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VoteAndQuizWebApi.Models.User", null)
-                        .WithMany("UserQuizAnswers")
-                        .HasForeignKey("UserId");
-
                     b.Navigation("Quiz");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("VoteAndQuizWebApi.Models.UserVoteAnswer", b =>
@@ -552,7 +560,7 @@ namespace VoteAndQuizWebApi.Migrations
             modelBuilder.Entity("VoteAndQuizWebApi.Models.Vote", b =>
                 {
                     b.HasOne("VoteAndQuizWebApi.Models.User", "Creator")
-                        .WithMany("CreatedVotes")
+                        .WithMany()
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -588,8 +596,6 @@ namespace VoteAndQuizWebApi.Migrations
 
             modelBuilder.Entity("VoteAndQuizWebApi.Models.User", b =>
                 {
-                    b.Navigation("CreatedVotes");
-
                     b.Navigation("UserQuizAnswers");
 
                     b.Navigation("UserVoteAnswers");
