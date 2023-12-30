@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "af7+GKPnymN7m5Pc4W/nNGPw6wYGCzler2WRYK5zTmc=",
+  "Hash": "6p96OsHURIKrdH8bB0rqXua06Vi+4psE7rg/Ozzleuc=",
   "Source": "VoteAndQuizWebApi",
   "BasePath": "_content/VoteAndQuizWebApi",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "VoteAndQuizWebApi\\wwwroot",
       "Source": "VoteAndQuizWebApi",
-      "ContentRoot": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
       "BasePath": "_content/VoteAndQuizWebApi",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\css\\site.css",
+      "Identity": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\css\\site.css",
       "SourceId": "VoteAndQuizWebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
       "BasePath": "_content/VoteAndQuizWebApi",
       "RelativePath": "css/site.css",
       "AssetKind": "All",
@@ -36,10 +36,10 @@
       "OriginalItemSpec": "wwwroot\\css\\site.css"
     },
     {
-      "Identity": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\favicon.ico",
+      "Identity": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\favicon.ico",
       "SourceId": "VoteAndQuizWebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
       "BasePath": "_content/VoteAndQuizWebApi",
       "RelativePath": "favicon.ico",
       "AssetKind": "All",
@@ -55,10 +55,10 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
-      "Identity": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\js\\site.js",
+      "Identity": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\js\\site.js",
       "SourceId": "VoteAndQuizWebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
       "BasePath": "_content/VoteAndQuizWebApi",
       "RelativePath": "js/site.js",
       "AssetKind": "All",
@@ -74,10 +74,10 @@
       "OriginalItemSpec": "wwwroot\\js\\site.js"
     },
     {
-      "Identity": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "Identity": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
       "SourceId": "VoteAndQuizWebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
       "BasePath": "_content/VoteAndQuizWebApi",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.css",
       "AssetKind": "All",
@@ -93,10 +93,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css"
     },
     {
-      "Identity": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "Identity": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
       "SourceId": "VoteAndQuizWebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
       "BasePath": "_content/VoteAndQuizWebApi",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.css.map",
       "AssetKind": "All",
@@ -112,10 +112,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
     },
     {
-      "Identity": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "Identity": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
       "SourceId": "VoteAndQuizWebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
       "BasePath": "_content/VoteAndQuizWebApi",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.min.css",
       "AssetKind": "All",
@@ -131,10 +131,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
     },
     {
-      "Identity": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "Identity": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
       "SourceId": "VoteAndQuizWebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
       "BasePath": "_content/VoteAndQuizWebApi",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.min.css.map",
       "AssetKind": "All",
@@ -150,10 +150,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "Identity": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
       "SourceId": "VoteAndQuizWebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
       "BasePath": "_content/VoteAndQuizWebApi",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.js",
       "AssetKind": "All",
@@ -169,10 +169,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js"
     },
     {
-      "Identity": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "Identity": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
       "SourceId": "VoteAndQuizWebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
       "BasePath": "_content/VoteAndQuizWebApi",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.min.js",
       "AssetKind": "All",
@@ -188,10 +188,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
     },
     {
-      "Identity": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\bootstrap\\LICENSE",
+      "Identity": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\bootstrap\\LICENSE",
       "SourceId": "VoteAndQuizWebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
       "BasePath": "_content/VoteAndQuizWebApi",
       "RelativePath": "lib/bootstrap/LICENSE",
       "AssetKind": "All",
@@ -207,10 +207,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\LICENSE"
     },
     {
-      "Identity": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\jquery\\dist\\jquery.js",
+      "Identity": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\jquery\\dist\\jquery.js",
       "SourceId": "VoteAndQuizWebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
       "BasePath": "_content/VoteAndQuizWebApi",
       "RelativePath": "lib/jquery/dist/jquery.js",
       "AssetKind": "All",
@@ -226,10 +226,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery\\dist\\jquery.js"
     },
     {
-      "Identity": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
+      "Identity": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
       "SourceId": "VoteAndQuizWebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
       "BasePath": "_content/VoteAndQuizWebApi",
       "RelativePath": "lib/jquery/dist/jquery.min.js",
       "AssetKind": "All",
@@ -245,10 +245,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery\\dist\\jquery.min.js"
     },
     {
-      "Identity": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
+      "Identity": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "SourceId": "VoteAndQuizWebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
       "BasePath": "_content/VoteAndQuizWebApi",
       "RelativePath": "lib/jquery/dist/jquery.min.map",
       "AssetKind": "All",
@@ -264,10 +264,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
-      "Identity": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\jquery\\LICENSE.txt",
+      "Identity": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\jquery\\LICENSE.txt",
       "SourceId": "VoteAndQuizWebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
       "BasePath": "_content/VoteAndQuizWebApi",
       "RelativePath": "lib/jquery/LICENSE.txt",
       "AssetKind": "All",
@@ -283,10 +283,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery\\LICENSE.txt"
     },
     {
-      "Identity": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "Identity": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
       "SourceId": "VoteAndQuizWebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
       "BasePath": "_content/VoteAndQuizWebApi",
       "RelativePath": "lib/jquery-validation/dist/additional-methods.js",
       "AssetKind": "All",
@@ -302,10 +302,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js"
     },
     {
-      "Identity": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "Identity": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
       "SourceId": "VoteAndQuizWebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
       "BasePath": "_content/VoteAndQuizWebApi",
       "RelativePath": "lib/jquery-validation/dist/additional-methods.min.js",
       "AssetKind": "All",
@@ -321,10 +321,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js"
     },
     {
-      "Identity": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "Identity": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
       "SourceId": "VoteAndQuizWebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
       "BasePath": "_content/VoteAndQuizWebApi",
       "RelativePath": "lib/jquery-validation/dist/jquery.validate.js",
       "AssetKind": "All",
@@ -340,10 +340,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js"
     },
     {
-      "Identity": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "Identity": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
       "SourceId": "VoteAndQuizWebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
       "BasePath": "_content/VoteAndQuizWebApi",
       "RelativePath": "lib/jquery-validation/dist/jquery.validate.min.js",
       "AssetKind": "All",
@@ -359,10 +359,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
     },
     {
-      "Identity": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
+      "Identity": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
       "SourceId": "VoteAndQuizWebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
       "BasePath": "_content/VoteAndQuizWebApi",
       "RelativePath": "lib/jquery-validation/LICENSE.md",
       "AssetKind": "All",
@@ -378,10 +378,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation\\LICENSE.md"
     },
     {
-      "Identity": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
+      "Identity": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
       "SourceId": "VoteAndQuizWebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
       "BasePath": "_content/VoteAndQuizWebApi",
       "RelativePath": "lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
       "AssetKind": "All",
@@ -397,10 +397,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js"
     },
     {
-      "Identity": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
+      "Identity": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
       "SourceId": "VoteAndQuizWebApi",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\User\\Desktop\\All my projects\\VoteAndQuizWebApi29Oct\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\wwwroot\\",
       "BasePath": "_content/VoteAndQuizWebApi",
       "RelativePath": "lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
       "AssetKind": "All",

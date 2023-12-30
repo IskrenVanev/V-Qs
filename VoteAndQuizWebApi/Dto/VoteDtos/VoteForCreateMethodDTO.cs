@@ -7,11 +7,11 @@ namespace VoteAndQuizWebApi.Dto.VoteDtos
     public class VoteForCreateMethodDTO
     {
         public string Name { get; set; }
-       // [JsonIgnore]
-        public string CreatorId { get; set; }
-        public DateTime? VoteEndDate { get; set; }
+    //    [JsonIgnore]
+    //    public string CreatorId { get; set; }
+        public DateTime VoteEndDate { get; set; }
         public ICollection<VoteOptionDTO> Options { get; set; }
-
+            
         public VoteForCreateMethodDTO()
         {
             VoteEndDate = DateTime.UtcNow.AddHours(3); // Set a default date

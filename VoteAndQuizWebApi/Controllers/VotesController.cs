@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using AutoMapper;
@@ -62,29 +63,40 @@ namespace VoteAndQuizWebApi.Controllers
             return Json(vote);
         }
         
-
         [HttpPost]
         [Authorize]
         public IActionResult Create([FromBody] VoteForCreateMethodDTO vote)
         //implement some kind of authentication so that when you create vote the vote's property - creator will be populated !!
-        {
+         {
             if (vote == null)
                 return BadRequest(ModelState);
-
-
-
-            var newVote = _mapper.Map<Vote>(vote);
-            //newVote.CreatorId = user.Id;
-
+          
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             User user = _unitOfWork.User.Get(u => u.Id == userId, "UserVoteAnswers");
-
             if (user == null) return Unauthorized();
 
-            newVote.Creator = user;
+            var newVote = new Vote
+            {
+                
+                Name = vote.Name,
+                UpdatedAt = DateTime.UtcNow.AddHours(3),
+                DeletedAt = null,
+                CreatedAt = DateTime.UtcNow.AddHours(3),
+                VoteEndDate = vote.VoteEndDate,
+                Options = _mapper.Map<List<VoteOption>>(vote.Options),
+                UserVoteAnswers = new List<UserVoteAnswer>(),
+                voteVotes = 0,
+                IsActive = true,
+                IsDeleted = false,
+                ShowVote = true,
+                CreatorId = userId
 
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+
+
+            };
+
+
+
             var voteObj = _voteRepository.Get(v => v.Name.Trim().ToUpper() == vote.Name.TrimEnd().ToUpper());
             if (voteObj != null)
             {
@@ -97,7 +109,9 @@ namespace VoteAndQuizWebApi.Controllers
                 ModelState.AddModelError("", "Something went wrong while saving");
                 return StatusCode(500, ModelState);
             }
-
+            //voteObj = _voteRepository.Get(v => v.Name.Trim().ToUpper() == vote.Name.TrimEnd().ToUpper());
+            //voteObj.CreatorId = userId;
+            //_unitOfWork.Save();
 
             return Ok("Successfully created");
         }
