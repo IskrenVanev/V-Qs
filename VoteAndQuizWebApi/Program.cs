@@ -20,9 +20,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
         .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 builder.Services.AddAuthorization();
-builder.Services.AddScoped<UserManager<IdentityUser>>();
-builder.Services.AddIdentityApiEndpoints<IdentityUser>()
-    .AddUserManager<UserManager<IdentityUser>>()
+builder.Services.AddScoped<UserManager<User>>();
+builder.Services.AddIdentityApiEndpoints<User>()
+    .AddUserManager<UserManager<User>>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.ConfigureApplicationCookie(options =>

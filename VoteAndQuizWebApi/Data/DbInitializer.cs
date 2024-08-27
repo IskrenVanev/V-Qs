@@ -5,11 +5,11 @@ namespace VoteAndQuizWebApi.Data
 {
     public class DbInitializer : IDbInitializer
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<User> _userManager;
        
         private readonly ApplicationDbContext _db;
 
-        public DbInitializer(UserManager<IdentityUser> userManager, ApplicationDbContext db)
+        public DbInitializer(UserManager<User> userManager, ApplicationDbContext db)
         {
             _userManager = userManager;
             _db = db;

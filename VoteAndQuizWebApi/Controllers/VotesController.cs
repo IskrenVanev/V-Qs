@@ -77,7 +77,6 @@ namespace VoteAndQuizWebApi.Controllers
 
             var newVote = new Vote
             {
-                
                 Name = vote.Name,
                 UpdatedAt = DateTime.UtcNow.AddHours(3),
                 DeletedAt = null,
@@ -90,14 +89,10 @@ namespace VoteAndQuizWebApi.Controllers
                 IsDeleted = false,
                 ShowVote = true,
                 CreatorId = userId
-
-
-
             };
 
-
-
             var voteObj = _voteRepository.Get(v => v.Name.Trim().ToUpper() == vote.Name.TrimEnd().ToUpper());
+
             if (voteObj != null)
             {
                 ModelState.AddModelError("", "Vote already exists");
@@ -109,9 +104,6 @@ namespace VoteAndQuizWebApi.Controllers
                 ModelState.AddModelError("", "Something went wrong while saving");
                 return StatusCode(500, ModelState);
             }
-            //voteObj = _voteRepository.Get(v => v.Name.Trim().ToUpper() == vote.Name.TrimEnd().ToUpper());
-            //voteObj.CreatorId = userId;
-            //_unitOfWork.Save();
 
             return Ok("Successfully created");
         }

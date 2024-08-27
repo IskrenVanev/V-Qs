@@ -16,25 +16,42 @@ public class MappingProfiles:Profile
     CreateMap<UserQuizAnswer, UserQuizAnswerDTO>();
 }
 
-// Mapping for create post method
-{
-    CreateMap<QuizDTO, QuizForCreateMethodDTO>();
-    CreateMap<QuizForCreateMethodDTO, Quiz>();
-    CreateMap<QuizForCreateMethodDTO, Quiz>()
-        .ForMember(dest => dest.CreatorId, opt => opt.MapFrom(src => src.Creator.Id)); // Assuming UserDTO has an Id property
-    CreateMap<Quiz, QuizForCreateMethodDTO>()
-        .ForMember(dest => dest.Options, opt => opt.MapFrom(src => src.Options.Select(o => o.UserAnswer)));
-}
+        // Mapping for create post method
+        {
+            // DTO to Entity
+            CreateMap<QuizForCreateMethodDTO, Quiz>()
+                .ForMember(dest => dest.Creator, opt => opt.Ignore()) // Creator will be set separately
+                .ForMember(dest => dest.Options, opt => opt.MapFrom(src => src.Options.Select(o => new UserQuizAnswer { UserAnswer = o.UserAnswer })));
 
-// Add mapping for UserDTO to User
-{
-    CreateMap<UserDTO, User>();
-    CreateMap<User, UserDTO > ();
-    CreateMap<UserQuizAnswerDTO, UserQuizAnswer>();
-}
+            // Entity to DTO
+            CreateMap<Quiz, QuizForCreateMethodDTO>()
+                .ForMember(dest => dest.Options, opt => opt.MapFrom(src => src.Options.Select(o => new UserQuizAnswerDTO { UserAnswer = o.UserAnswer })));
 
-// Mapping for votes
-{
+            // Mapping for UserQuizAnswer <-> UserQuizAnswerDTO
+            CreateMap<UserQuizAnswer, UserQuizAnswerDTO>()
+                .ForMember(dest => dest.UserAnswer, opt => opt.MapFrom(src => src.UserAnswer))
+                .ReverseMap(); // Enables both ways mapping
+
+            // Mapping for QuizOption <-> QuizOptionDTO
+            CreateMap<QuizOption, QuizOptionDTO>()
+                .ForMember(dest => dest.Answer, opt => opt.MapFrom(src => src.Answer))
+                .ReverseMap(); // Enables both ways mapping
+
+            // Mapping for Quiz <-> QuizForCreateMethodDTO (if needed)
+            CreateMap<Quiz, QuizForCreateMethodDTO>()
+                .ReverseMap(); // Enables both ways mapping
+
+        }
+
+        // Add mapping for UserDTO to User
+        //{
+        //    CreateMap<UserDTO, User>();
+        //    CreateMap<User, UserDTO > ();
+        //    CreateMap<UserQuizAnswerDTO, UserQuizAnswer>();
+        //}
+
+        // Mapping for votes
+        {
     CreateMap<Vote, VoteDTO>()
         .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
         .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
