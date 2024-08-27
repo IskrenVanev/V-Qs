@@ -5,48 +5,48 @@ namespace VoteAndQuizWebApi.Data
 {
     public class DbInitializer : IDbInitializer
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
        
         private readonly ApplicationDbContext _db;
 
-        public DbInitializer(UserManager<User> userManager,
-            
-            ApplicationDbContext db)
+        public DbInitializer(UserManager<IdentityUser> userManager, ApplicationDbContext db)
         {
-            
             _userManager = userManager;
             _db = db;
-
         }
 
-        public async Task SeedData()
+        public void SeedData()
         {
-            if (await _userManager.FindByEmailAsync("admin@iskren.com") == null)
-            {
+            var user = _db.Users.FirstOrDefault(u => u.Email == "admin@iskren.com");
 
-                var FirstUser = _userManager.CreateAsync(new User
+            if (user == null)
+            {
+                var newUser = new User
                 {
                     UserName = "admin@iskren.com",
                     Email = "admin@iskren.com",
-                    
                     PhoneNumber = "123123123",
-                    
+                };
 
+                var result = _userManager.CreateAsync(newUser, "Qqq123*").GetAwaiter().GetResult();
 
-                }, "Qqq123*").GetAwaiter().GetResult();
+                if (result.Succeeded)
+                {
+                    user = newUser; // Use the same instance created by UserManager
+                }
+                else
+                {
+                    throw new Exception("User creation failed: " + string.Join(", ", result.Errors.Select(e => e.Description)));
+                }
 
-                User user = _db.Users.FirstOrDefault(u => u.Email == "admin@iskren.com");
-              
-               
                 if (!_db.Quizzes.Any())
                 {
                     // Create a list of quizzes to seed the database
-                    var quizzesToSeed = new List<Quiz>
+                    var quizToSeed = new List<Quiz>
                     {
-                        new Quiz
-                        {
+                         new Quiz
+                         {
                             Name = "Quiz 1",
-                            //CreatorId =newUser.CustomUserId,
                             Creator = user,
                             CreatedAt = DateTime.Now,
                             QuizEndDate = DateTime.Now.AddDays(7),
@@ -63,12 +63,11 @@ namespace VoteAndQuizWebApi.Data
 
                             },
                             CorrectOption = new QuizOption { Answer = "Answer 2"  }
-                        },
-                        // Add more quizzes as needed
+                                              // Add more quizzes as needed
+                         }
                     };
-
                     // Add quizzes to the database
-                    _db.Quizzes.AddRange(quizzesToSeed);
+                    _db.Quizzes.AddRange(quizToSeed);
                     _db.SaveChanges();
                 }
 
@@ -79,7 +78,6 @@ namespace VoteAndQuizWebApi.Data
                         new Vote
                         {
                             Name = "Vote 1",
-                            //CreatorId = newUser.CustomUserId,
                             Creator = user,
                             CreatedAt = DateTime.Now,
                             VoteEndDate = DateTime.Now.AddDays(7),
@@ -100,18 +98,6 @@ namespace VoteAndQuizWebApi.Data
                     _db.SaveChanges();
                 }
             }
-            // var newUser =  _userManager.CreateAsync(new User
-            //   {
-            //       UserName = "admin@iskren.com",
-            //       Email = "admin@iskren.com",
-            //       Wins = 0, // Set initial wins count
-            //       Loses = 0, // Set initial loses count
-            //
-            //
-            //   }, "Qqq123*").GetAwaiter().GetResult();
-
-
-
         }
     }
 }

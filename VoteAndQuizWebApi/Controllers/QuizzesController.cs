@@ -111,7 +111,7 @@ namespace VoteAndQuizWebApi.Controllers
         }
         
         [HttpPost("Finish/{quizId}")]
-        public IActionResult FinishQuiz(int quizId)
+        public IActionResult FinishQuiz(int quizId) //only creator can finish it
         {
             var quiz = _unitOfWork.Quiz.Get(q => q.Id == quizId);
             if (quiz == null)

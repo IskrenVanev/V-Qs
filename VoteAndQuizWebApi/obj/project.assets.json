@@ -12389,23 +12389,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\SZP\\.nuget\\packages\\": {},
+    "C:\\Users\\user\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\VoteAndQuizWebApi.csproj",
+      "projectUniqueName": "C:\\Users\\user\\Desktop\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\VoteAndQuizWebApi.csproj",
       "projectName": "VoteAndQuizWebApi",
-      "projectPath": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\VoteAndQuizWebApi.csproj",
-      "packagesPath": "C:\\Users\\SZP\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\SZP\\Desktop\\All my projects\\VoteAndQuizWebApi 29 dec\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\obj\\",
+      "projectPath": "C:\\Users\\user\\Desktop\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\VoteAndQuizWebApi.csproj",
+      "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\user\\Desktop\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\SZP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -12414,6 +12414,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -12426,6 +12427,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -12502,7 +12508,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100-rc.2.23502.2/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

@@ -20,14 +20,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
         .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 builder.Services.AddAuthorization();
-builder.Services.AddScoped<UserManager<User>>();
-//builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
-builder.Services.AddIdentityApiEndpoints<User>()
-    .AddUserManager<UserManager<User>>()
+builder.Services.AddScoped<UserManager<IdentityUser>>();
+builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+    .AddUserManager<UserManager<IdentityUser>>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
-
-
-
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -42,7 +38,6 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IQuizRepository, QuizRepository>();
 builder.Services.AddScoped<IVoteRepository, VoteRepository>();
 builder.Services.AddScoped<IVoteOptionRepository, VoteOptionRepository>();
-//builder.Services.AddScoped<IEmailSender, EmailSender>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -63,7 +58,7 @@ app.MapRazorPages();
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 var dbContext = services.GetRequiredService<ApplicationDbContext>();
-//dbContext.SeedData(); // Call the SeedData method here
+var dbInitializer = services.GetRequiredService<IDbInitializer>();
 SeedDatabase();
 app.MapControllers();
 
@@ -80,18 +75,12 @@ void SeedDatabase()
 
 //TODO: fix the problem with swagger in finish method in the VotesController. It does not add the wins/loses to the user that has logged in
 //TODO: Implement authentication for creating a vote and assign Creator property to be the logged in user, then you can test the finish method.
-
-
-
-
-
-//TODO:Finally when you are ready with everything, learn how to use gRPC and connect your part of the project to Jam's project!!!
-
-
-
-
-
-
-
-
 //TODO:Implement logic for the date in other countries too in the controllers.
+
+//builder.Services.AddIdentity<User, IdentityRole>(options =>
+//{
+//    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+//    options.User.RequireUniqueEmail = true;
+//})
+//.AddEntityFrameworkStores<ApplicationDbContext>()
+//.AddDefaultTokenProviders();
