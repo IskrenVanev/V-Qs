@@ -40,37 +40,47 @@ namespace VoteAndQuizWebApi.Controllers
         [HttpGet]
         public IActionResult Index() //Lists all votes on the main vote page
         {
-            var votes = _mapper.Map<List<VoteDTO>>(_unitOfWork.Vote.GetAll(v => !v.IsDeleted).Include(v => v.Options));
+            var votes = _mapper.Map<List<VoteDTO>>(_unitOfWork.Vote.GetAll(v => v.IsActive).Include(v => v.Options));
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Json(votes);
         }
-        
-        [HttpGet("{id}")]
+
+        [HttpGet("Details/{id}")]
         [ProducesResponseType(200)]
         public IActionResult Details(int? id)
         {
             if (id == null)
                 return BadRequest();
-          
-
+         
             //Details Method Dto ***
             var vote = _mapper.Map<VoteDTO>(_unitOfWork.Vote.Get(q => q.Id == id, "Options"));
             if (vote.IsDeleted == true)
                 return BadRequest();
+
             if (vote == null)
                 return NotFound();
 
             return Json(vote);
         }
-        
-        [HttpPost]
+
+        [HttpPost("Create")]
         [Authorize]
         public IActionResult Create([FromBody] VoteForCreateMethodDTO vote)
         //implement some kind of authentication so that when you create vote the vote's property - creator will be populated !!
          {
-            if (vote == null)
+
+            if (vote == null || vote.Options == null || vote.Options.Count < 2)
+            {
+                ModelState.AddModelError("", "Vote must have at least 2 options.");
                 return BadRequest(ModelState);
-          
+            }
+
+            if (vote.VoteEndDate < DateTime.UtcNow.AddDays(1))
+            {
+                ModelState.AddModelError("", "Vote end date must be at least one day from today.");
+                return BadRequest(ModelState);
+            }
+
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             User user = _unitOfWork.User.Get(u => u.Id == userId, "UserVoteAnswers");
             if (user == null) return Unauthorized();
@@ -83,7 +93,7 @@ namespace VoteAndQuizWebApi.Controllers
                 CreatedAt = DateTime.UtcNow.AddHours(3),
                 VoteEndDate = vote.VoteEndDate,
                 Options = _mapper.Map<List<VoteOption>>(vote.Options),
-                UserVoteAnswers = new List<UserVoteAnswer>(),
+                UserVoteAnswers = new List<UserVoteAnswer>(),//Here, I should have a winner option!!!
                 voteVotes = 0,
                 IsActive = true,
                 IsDeleted = false,
@@ -92,7 +102,7 @@ namespace VoteAndQuizWebApi.Controllers
             };
 
             var voteObj = _voteRepository.Get(v => v.Name.Trim().ToUpper() == vote.Name.TrimEnd().ToUpper());
-
+            
             if (voteObj != null)
             {
                 ModelState.AddModelError("", "Vote already exists");
