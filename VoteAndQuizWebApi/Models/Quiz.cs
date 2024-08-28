@@ -19,7 +19,7 @@ namespace VoteAndQuizWebApi.Models
         public DateTime CreatedAt { get; set; }
         [Required]
         public DateTime QuizEndDate { get; set; }
-        public long quizVotes { get; set; }
+        public long quizVotes { get; set; }//number of votes for a quiz
 
         [Required]
         public ICollection<UserQuizAnswer> Options { get; set; }

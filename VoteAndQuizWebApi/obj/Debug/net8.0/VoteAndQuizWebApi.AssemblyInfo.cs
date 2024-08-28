@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VoteAndQuizWebApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1bf3ef6f97b595926b2754a8a50b79a3a5e8b676")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f927d7e09c792fc54c91fbf74d328dfd7ff5559d")]
 [assembly: System.Reflection.AssemblyProductAttribute("VoteAndQuizWebApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VoteAndQuizWebApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

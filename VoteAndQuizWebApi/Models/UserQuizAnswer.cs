@@ -15,6 +15,7 @@ namespace VoteAndQuizWebApi.Models
         [JsonIgnore]
         public Quiz Quiz { get; set; } // Navigation property
 
+        public long quizAnswerVotes { get; set; }//number of votes for a quiz answer
         // Other properties related to the Option
 
     }

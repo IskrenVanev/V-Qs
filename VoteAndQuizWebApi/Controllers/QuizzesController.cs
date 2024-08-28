@@ -34,7 +34,7 @@ namespace VoteAndQuizWebApi.Controllers
         [HttpGet]
         public IActionResult Index() //Lists all quizzes on the main quiz page
         {
-            var quizzes = _mapper.Map<List<QuizForIndexMethodDTO>>(_unitOfWork.Quiz.GetAll(q => !q.IsDeleted).Include(q => q.Options));
+            var quizzes = _mapper.Map<List<QuizForIndexMethodDTO>>(_unitOfWork.Quiz.GetAll(q => !q.IsActive).Include(q => q.Options));
             if (!ModelState.IsValid) return BadRequest(ModelState);
             return Json(quizzes);
         }
@@ -142,19 +142,40 @@ namespace VoteAndQuizWebApi.Controllers
 
             return Ok("Successfully deleted");
         }
-        [HttpPut("{quizId}")] //this does not make sense... add voting endpoint
-        public IActionResult UpdateQuiz(int quizId)//updating quiz happens when someone votes for a quiz option
+        [HttpPut("{quizId}/vote/{answerId}")]
+        public IActionResult VoteForQuiz(int quizId, int answerId)
         {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            User user = _unitOfWork.User.Get(u => u.Id == userId);
+            if (user == null) return Unauthorized("Log in to vote for a quiz");
+
+            // Get the quiz from the repository
             var quiz = _unitOfWork.Quiz.Get(q => q.Id == quizId);
-            if (quiz == null)
-                return BadRequest(ModelState);
-            if (quiz.IsDeleted == true)
-                return BadRequest(ModelState);
-            quiz.UpdatedAt = DateTime.UtcNow.AddHours(3); 
+            if (quiz == null || quiz.IsDeleted)
+                return NotFound("Quiz not found or has been deleted.");
+
+            // Check if the quiz is still active
+            if (!quiz.IsActive || quiz.QuizEndDate < DateTime.UtcNow.AddHours(3))
+                return BadRequest("Voting is closed for this quiz.");
+
+            // Get the specific answer from the quiz options
+            var answer = _unitOfWork.UserQuizAnswer.Get(uqa => uqa.Id == answerId);
+            if (answer == null)
+                return NotFound("Quiz answer not found.");
+
+            // Increment the vote count for the selected answer
+            answer.quizAnswerVotes += 1;
+
+            // Increment the total vote count for the quiz
             quiz.quizVotes += 1;
+            quiz.UpdatedAt = DateTime.UtcNow.AddHours(3);
+
+            // Save the changes to the database
+            _unitOfWork.UserQuizAnswer.Update(answer);
             _unitOfWork.Quiz.Update(quiz);
             _unitOfWork.Save();
-            return Ok("Successfully updated quiz");
+
+            return Ok("Successfully voted for the quiz answer.");
         }
         
         [HttpPost("Finish/{quizId}")]
@@ -175,15 +196,35 @@ namespace VoteAndQuizWebApi.Controllers
 
             quiz.QuizEndDate = DateTime.UtcNow.AddHours(3);
             quiz.IsActive = false;
-            quiz.ShowQuiz = false;
-            quiz.IsDeleted = true;
             quiz.UpdatedAt = DateTime.UtcNow.AddHours(3);
-            quiz.DeletedAt = DateTime.UtcNow.AddHours(3);
 
             _unitOfWork.Quiz.Update(quiz);
             _unitOfWork.Save();
 
             return Ok("Successfully finished quiz");
+        }
+
+        [HttpGet("CorrectOption/{quizId}")]
+        public IActionResult GetCorrectOption(int quizId)
+        {
+            // Fetch the quiz by ID
+            var quiz = _unitOfWork.Quiz.Get(q => q.Id == quizId);
+            if (quiz == null || quiz.IsDeleted)
+                return NotFound("Quiz not found or has been deleted.");
+
+            // Check if the quiz has been finished
+            if (quiz.IsActive)
+            {
+                return BadRequest("Quiz is still active. The correct option is not available yet.");
+            }
+
+            // Retrieve the correct (winning) option
+            var correctOption = _unitOfWork.QuizOption.Get(o => o.QuizId == quiz.Id);
+            if (correctOption == null)
+                return NotFound("Correct option not found.");
+
+            // Return the correct option
+            return Ok(correctOption);
         }
     }
 }
