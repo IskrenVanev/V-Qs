@@ -2,7 +2,7 @@
 
 namespace VoteAndQuizWebApi.Models
 {
-    public class QuizOption
+    public class WinnerQuizOption //the correct answer
     {
         [Key]
         public int Id { get; set; }

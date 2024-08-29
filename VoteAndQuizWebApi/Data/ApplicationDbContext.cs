@@ -16,7 +16,7 @@ namespace VoteAndQuizWebApi.Data
         public DbSet<Quiz> Quizzes { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Vote> Votes { get; set; }
-        public DbSet<QuizOption> QuizOptions { get; set; }
+        public DbSet<WinnerQuizOption> WinnerQuizOptions { get; set; }
         public DbSet<VoteOption> VoteOptions { get; set; }
         public DbSet<UserQuizAnswer> UserQuizAnswers { get; set; }
         public DbSet<UserVoteAnswer> UserVoteAnswers { get; set; }
@@ -47,7 +47,7 @@ namespace VoteAndQuizWebApi.Data
             modelBuilder.Entity<Quiz>()
                 .HasOne(q => q.CorrectOption)
                 .WithOne(qo => qo.Quiz)
-                .HasForeignKey<QuizOption>(qa => qa.QuizId);
+                .HasForeignKey<WinnerQuizOption>(qa => qa.QuizId);
 
             modelBuilder.Entity<Vote>()
                 .HasMany(v => v.Options)

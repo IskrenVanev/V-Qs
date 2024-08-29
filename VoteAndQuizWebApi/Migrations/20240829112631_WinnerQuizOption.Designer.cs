@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VoteAndQuizWebApi.Data;
 
@@ -11,9 +12,11 @@ using VoteAndQuizWebApi.Data;
 namespace VoteAndQuizWebApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240829112631_WinnerQuizOption")]
+    partial class WinnerQuizOption
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -428,7 +431,7 @@ namespace VoteAndQuizWebApi.Migrations
                     b.HasIndex("QuizId")
                         .IsUnique();
 
-                    b.ToTable("WinnerQuizOptions");
+                    b.ToTable("QuizOptions");
                 });
 
             modelBuilder.Entity("VoteAndQuizWebApi.Models.User", b =>

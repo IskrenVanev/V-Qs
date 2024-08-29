@@ -2,7 +2,7 @@
 {
     public interface IUnitOfWork
     {
-        IQuizOptionRepository QuizOption { get; }
+        IWinnerQuizOptionRepository WinnerQuizOption { get; }
         IQuizRepository Quiz { get; }
         IUserQuizAnswerRepository UserQuizAnswer { get; }
         IUserRepository User { get; }

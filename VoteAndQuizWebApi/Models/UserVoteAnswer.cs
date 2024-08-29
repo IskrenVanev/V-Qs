@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace VoteAndQuizWebApi.Models
 {
-    public class UserVoteAnswer
+    public class UserVoteAnswer //the options that the user voted for
     {
         [Key]
         public int Id { get; set; }

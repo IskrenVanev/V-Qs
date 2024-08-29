@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using VoteAndQuizWebApi.Dto.VoteDtos;
 using VoteAndQuizWebApi.Dto;
+using System.ComponentModel.DataAnnotations;
 
 namespace VoteAndQuizWebApi.Dto.VoteDtos
 {
@@ -10,6 +11,7 @@ namespace VoteAndQuizWebApi.Dto.VoteDtos
     //    [JsonIgnore]
     //    public string CreatorId { get; set; }
         public DateTime VoteEndDate { get; set; }
+        [MinLength(2, ErrorMessage = "At least two options are required.")]
         public ICollection<VoteOptionDTO> Options { get; set; }
             
         public VoteForCreateMethodDTO()

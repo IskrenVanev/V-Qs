@@ -38,12 +38,18 @@ namespace VoteAndQuizWebApi.Repository
             return Save();
         }
 
-        public VoteOption GetVoteResult(int voteId)
+        public List<VoteOption> GetVoteResult(int voteId)
         {
             var vote = _db.Votes.Include(v => v.Options).FirstOrDefault(v => v.Id == voteId);
-            if (vote == null) return null; // think about a better way to do this
-           
-            var result = vote.Options.MaxBy(o => o.VoteCount);
+            if (vote == null)
+                return new List<VoteOption>(); // Returning an empty list to indicate no result
+
+            // Find the maximum vote count
+            var maxVoteCount = vote.Options.Max(o => o.VoteCount);
+
+            // Find all options that have the maximum vote count
+            var result = vote.Options.Where(o => o.VoteCount == maxVoteCount).ToList();
+
             return result;
         }
 

@@ -1,6 +1,6 @@
 ﻿namespace VoteAndQuizWebApi.Dto
 {
-    public class QuizOptionDTO
+    public class WinnerQuizOptionDTO
     {
         
         public string Answer { get; set; }

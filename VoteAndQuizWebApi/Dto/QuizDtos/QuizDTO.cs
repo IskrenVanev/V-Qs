@@ -18,7 +18,7 @@ namespace VoteAndQuizWebApi.Dto
         public long quizVotes { get; set; }
        
         public ICollection<UserQuizAnswerDTO> Options { get; set; }
-        public QuizOptionDTO CorrectOption { get; set; }
+        public WinnerQuizOptionDTO CorrectOption { get; set; }
         
         
         

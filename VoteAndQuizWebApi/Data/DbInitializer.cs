@@ -62,7 +62,7 @@ namespace VoteAndQuizWebApi.Data
                                 new UserQuizAnswer { UserAnswer = "Answer 3" }
 
                             },
-                            CorrectOption = new QuizOption { Answer = "Answer 2"  }
+                            CorrectOption = new WinnerQuizOption { Answer = "Answer 2"  }
                                               // Add more quizzes as needed
                          }
                     };

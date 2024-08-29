@@ -7,7 +7,7 @@ namespace VoteAndQuizWebApi.Repository
     {
         private ApplicationDbContext _db;
 
-        public IQuizOptionRepository QuizOption { get; private set; }
+        public IWinnerQuizOptionRepository WinnerQuizOption { get; private set; }
 
         public IQuizRepository Quiz { get; private set; }
 
@@ -26,7 +26,7 @@ namespace VoteAndQuizWebApi.Repository
             User = new UserRepository(_db);
             Quiz = new QuizRepository(_db);
             Vote = new VoteRepository(_db);
-            QuizOption = new QuizOptionRepository(_db);
+            WinnerQuizOption = new WinnerQuizOptionRepository(_db);
             VoteOption = new VoteOptionRepository(_db /*, this*/);
             UserVoteAnswer = new UserVoteAnswerRepository(_db);
             UserQuizAnswer = new UserQuizAnswerRepository(_db);

@@ -53,7 +53,7 @@ namespace VoteAndQuizWebApi.Controllers
                 return NotFound();
 
             if (quiz.IsDeleted == true)
-                return BadRequest();
+                return BadRequest("This Quiz no longer exists");
 
             return Json(quiz);
         }
@@ -89,7 +89,7 @@ namespace VoteAndQuizWebApi.Controllers
                 QuizEndDate = quizDto.QuizEndDate == DateTime.MinValue ? DateTime.UtcNow.AddDays(14) : quizDto.QuizEndDate,
                 quizVotes = quizDto.quizVotes,
                 Options = _mapper.Map<List<UserQuizAnswer>>(quizDto.Options),
-                CorrectOption = _mapper.Map<QuizOption>(quizDto.CorrectOption),
+                CorrectOption = _mapper.Map<WinnerQuizOption>(quizDto.CorrectOption),
                 IsActive = true,
                 IsDeleted = false,
                 ShowQuiz = true,
@@ -219,7 +219,7 @@ namespace VoteAndQuizWebApi.Controllers
             }
 
             // Retrieve the correct (winning) option
-            var correctOption = _unitOfWork.QuizOption.Get(o => o.QuizId == quiz.Id);
+            var correctOption = _unitOfWork.WinnerQuizOption.Get(o => o.QuizId == quiz.Id);
             if (correctOption == null)
                 return NotFound("Correct option not found.");
 

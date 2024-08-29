@@ -11,7 +11,7 @@ public class QuizForCreateMethodDTO
     [MinLength(2, ErrorMessage = "At least two options are required.")]
     public ICollection<UserQuizAnswerDTO> Options { get; set; }
     public DateTime QuizEndDate { get; set; }
-    public QuizOptionDTO CorrectOption { get; set; }
+    public WinnerQuizOptionDTO CorrectOption { get; set; }
     public int quizVotes { get; private set; } = 0;
     public bool ShowQuiz { get; private set; } = true;
     public bool IsActive { get; private set; } = true;

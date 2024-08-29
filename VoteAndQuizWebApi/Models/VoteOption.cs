@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace VoteAndQuizWebApi.Models
 {
-    public class VoteOption
+    public class VoteOption //the vote options
     {
         [Key]
         public int Id { get; set; }

@@ -28,7 +28,7 @@ namespace VoteAndQuizWebApi.Models
         [Required]
         [ForeignKey("CorrectOptionId")]
 
-        public QuizOption CorrectOption { get; set; }
+        public WinnerQuizOption CorrectOption { get; set; }
         [Required]
         public bool IsActive { get; set; }
         [Required]

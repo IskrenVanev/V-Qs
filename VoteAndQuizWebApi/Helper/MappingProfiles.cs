@@ -33,7 +33,7 @@ public class MappingProfiles:Profile
                 .ReverseMap(); // Enables both ways mapping
 
             // Mapping for QuizOption <-> QuizOptionDTO
-            CreateMap<QuizOption, QuizOptionDTO>()
+            CreateMap<WinnerQuizOption, WinnerQuizOptionDTO>()
                 .ForMember(dest => dest.Answer, opt => opt.MapFrom(src => src.Answer))
                 .ReverseMap(); // Enables both ways mapping
 
@@ -63,10 +63,10 @@ public class MappingProfiles:Profile
         .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive))
         .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(src => src.IsDeleted))
         .ForMember(dest => dest.ShowVote, opt => opt.MapFrom(src => src.ShowVote));
-    CreateMap<VoteOption, VoteOptionDTO>()
-        .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-        .ForMember(dest => dest.Option, opt => opt.MapFrom(src => src.Option))
-        .ForMember(dest => dest.VoteCount, opt => opt.MapFrom(src => src.VoteCount));
+            CreateMap<VoteOption, VoteOptionDTO>()
+                //.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Option, opt => opt.MapFrom(src => src.Option));
+       // .ForMember(dest => dest.VoteCount, opt => opt.MapFrom(src => src.VoteCount));
     
     // Reverse mapping for VoteDTO to Vote
     CreateMap<VoteDTO, Vote>();

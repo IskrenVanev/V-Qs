@@ -93,7 +93,7 @@ namespace VoteAndQuizWebApi.Controllers
                 CreatedAt = DateTime.UtcNow.AddHours(3),
                 VoteEndDate = vote.VoteEndDate,
                 Options = _mapper.Map<List<VoteOption>>(vote.Options),
-                UserVoteAnswers = new List<UserVoteAnswer>(),//Here, I should have a winner option!!!
+                UserVoteAnswers = new List<UserVoteAnswer>(),//Here, I should have a winner option (or tie)
                 voteVotes = 0,
                 IsActive = true,
                 IsDeleted = false,
@@ -117,44 +117,50 @@ namespace VoteAndQuizWebApi.Controllers
 
             return Ok("Successfully created");
         }
-        
+
         [HttpGet("Result/{id}")]
-        public IActionResult GetVoteResult(int? id) 
+        public IActionResult GetVoteResult(int? id)
         {
             if (id == null)
             {
-                return BadRequest();
+                return BadRequest("Vote ID cannot be null.");
             }
-            if (!_voteRepository.VoteExists(id))
-                return NotFound();
-            
-            var result =  _voteRepository.GetVoteResult(id.Value);
-            if (result.Vote.IsDeleted == true)
-            {
-                return BadRequest();
-            }
-            if (result == null)
-            {
-                ModelState.AddModelError("", "Vote result not found."); 
-                return StatusCode(404, ModelState); 
-            }
-            if (!ModelState.IsValid)
-                return BadRequest();
-            
-            // Map the VoteOption to the VoteOptionDTO
-            var voteOptionDto = new VoteOptionDTO
-            {
-                Id = result.Id,
-                Option = result.Option,
-                VoteCount = result.VoteCount,
-                // Map other properties
-            };
 
-            return Json(voteOptionDto);
+            if (!_voteRepository.VoteExists(id.Value))
+            {
+                return NotFound("Vote not found.");
+            }
+
+            var result = _voteRepository.GetVoteResult(id.Value);
+
+            if (result == null || !result.Any())
+            {
+                ModelState.AddModelError("", "No results found for this vote.");
+                return StatusCode(404, ModelState);
+            }
+
+            var vote = _unitOfWork.Vote.Get(v => v.Id == id);
+            if (vote.IsDeleted)
+            {
+                return BadRequest("This vote has been deleted.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Map the list of VoteOption to a list of VoteOptionDTO
+            var voteOptionDtos = result.Select(option => new VoteOptionDTO
+            {
+                voteCount = option.VoteCount,
+                Option = option.Option,
+            }).ToList();
+
+            return Ok(voteOptionDtos);
         }
-        
-        [HttpDelete("{id}")]
-        
+
+        [HttpDelete("Delete/{id}")]
         public IActionResult Delete(int? id)
         {
             if (!_voteRepository.VoteExists(id))
