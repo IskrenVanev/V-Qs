@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging.Signing;
 using VoteAndQuizWebApi.Data;
 using VoteAndQuizWebApi.Dto;
 using VoteAndQuizWebApi.Dto.VoteDtos;
@@ -165,20 +166,36 @@ namespace VoteAndQuizWebApi.Controllers
         {
             if (!_voteRepository.VoteExists(id))
                 return NotFound();
+
             if (id == null || id == 0)
             {
                 return NotFound();
             }
+
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            User user = _unitOfWork.User.Get(u => u.Id == userId);
+            if (user == null) return Unauthorized("Log in to delete a vote");
+
             Vote? voteFromDb = _unitOfWork.Vote.Get(u => u.Id == id);
 
             if (voteFromDb == null)
             {
                 return NotFound();
             }
+
+            if (voteFromDb.IsDeleted)
+                return BadRequest("This vote is already deleted!");
+
+            if (voteFromDb.CreatorId != userId)
+            {
+                return Unauthorized("You are not authorized to delete this vote.");
+            }
+
             if (!_voteRepository.DeleteVote(voteFromDb))
             {
                 ModelState.AddModelError("", "Something went wrong deleting vote");
             }
+
             return Ok("Successfully deleted");
         }
 
@@ -195,56 +212,60 @@ namespace VoteAndQuizWebApi.Controllers
             {
                 return BadRequest();
             }
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);//take the id of the user who clicked on this endpoint
+
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            User user = _unitOfWork.User.Get(u => u.Id == userId, "UserVoteAnswers");
+            if (user == null) return Unauthorized("Log in to finish a vote");
+
             var vote = _unitOfWork.Vote.Get(v => v.Id == id, "Options");
             if (userId != vote.CreatorId)//this actually works
             {
                 return BadRequest("You can't finish this vote because you are not the creator!");
             }
 
-
             var finished =  _voteRepository.FinishVote(id);
             long maxVoteCount = 0;
             
             if (finished)
             {
-           
-                
                 if (vote.Options != null && vote.Options.Any())
                 {
                     maxVoteCount = vote.Options.Max(o => o.VoteCount);
-                    
                 }
                 else
                 {
-                    
                     ModelState.AddModelError("", "Finishing the vote failed."); 
                     return StatusCode(500, ModelState);
                 }
 
-
-               
-                var winningOption = vote.Options.Where(o => o.VoteCount == maxVoteCount);
-                foreach (var user in _unitOfWork.User.GetAll().ToList())
+                var winningOptions = vote.Options.Where(o => o.VoteCount == maxVoteCount);
+                foreach (var u in _unitOfWork.User.GetAll().ToList())
                 {
+
+                    
                     // Check if the user voted for any of the winning options
 
-                    var userVotedForWinningOption = user.UserVoteAnswers != null &&
-                               winningOption != null &&
-                               user.UserVoteAnswers.Any(uva => winningOption.Any(vo => vo != null && vo.Option == uva.Option));
-               
+                    var userVotedForWinningOption = u.UserVoteAnswers != null &&
+                        winningOptions != null &&
+                        u.UserVoteAnswers.Any(uva =>
+                            winningOptions.Any(wo =>
+                                wo.VoteId == uva.VoteId && // Compare VoteId
+                                wo.Option == uva.Option // Compare Option strings
+                            )
+                        );
+
 
                     if (userVotedForWinningOption)
                     {
-                        user.Wins++;
-                        _unitOfWork.User.Update(user);
+                        u.Wins++;
+                        _unitOfWork.User.Update(u);
                         _unitOfWork.Save();
                     }
                     else
                     {
-                        _unitOfWork.User.Update(user);
+                        u.Loses++;
+                        _unitOfWork.User.Update(u);
                         _unitOfWork.Save();
-                        user.Loses++;
                     }
                 }
                 
@@ -252,7 +273,6 @@ namespace VoteAndQuizWebApi.Controllers
             }
             else
             {
-                Console.WriteLine("here2");
                 ModelState.AddModelError("", "Finishing the vote failed."); // Add a model error
                 return StatusCode(500, ModelState);
             }
@@ -317,8 +337,11 @@ namespace VoteAndQuizWebApi.Controllers
                 VoteId = vote.Id
 
             };
-           // user.
-            
+            // user.
+
+           
+
+
             _unitOfWork.User.Save();
 
             _unitOfWork.UserVoteAnswer.Add(userVoteAnswer);

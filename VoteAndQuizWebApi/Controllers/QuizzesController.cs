@@ -127,7 +127,10 @@ namespace VoteAndQuizWebApi.Controllers
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             User user = _unitOfWork.User.Get(u => u.Id == userId);
-            if (user == null) return Unauthorized();
+            if (user == null) return Unauthorized("Log in to delete a quiz");
+
+            if (quizToDelete.IsDeleted)
+                return BadRequest("This quiz is already deleted!");
 
             // Check if the logged-in user is the creator of the quiz
             if (quizToDelete.CreatorId != userId)

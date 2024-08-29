@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
 namespace VoteAndQuizWebApi.Models
@@ -15,7 +16,7 @@ namespace VoteAndQuizWebApi.Models
         public long VoteCount { get; set; }
         
         public int VoteId { get; set; }
-    
+        [ForeignKey("VoteId")]
         public Vote Vote { get; set; }
     }
 }

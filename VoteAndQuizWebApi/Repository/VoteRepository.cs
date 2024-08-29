@@ -79,20 +79,11 @@ namespace VoteAndQuizWebApi.Repository
            vote.VoteEndDate = DateTime.UtcNow.AddHours(3);
            vote.IsActive = false;
            vote.UpdatedAt = DateTime.UtcNow.AddHours(3);
-           vote.ShowVote = false;
-           vote.DeletedAt = DateTime.UtcNow.AddHours(3);
-           vote.IsDeleted = true;
            _db.Votes.Update(vote);
            _db.SaveChanges();
            
            return true;
-
         }
-        
-       
-        
-        
-        
 
         public bool Save()
         {
