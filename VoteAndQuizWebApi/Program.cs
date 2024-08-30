@@ -38,7 +38,21 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IQuizRepository, QuizRepository>();
 builder.Services.AddScoped<IVoteRepository, VoteRepository>();
 builder.Services.AddScoped<IVoteOptionRepository, VoteOptionRepository>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:7056") // URL of your React app
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
+
+app.UseCors("AllowReactApp");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -55,6 +69,15 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
+
+// Serve React app's static files
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    // Fallback to serve React index.html for any route not matched by other controllers
+    endpoints.MapFallbackToFile("index.html");
+});
+
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 var dbContext = services.GetRequiredService<ApplicationDbContext>();
@@ -73,9 +96,6 @@ void SeedDatabase()
     }
 }
 
-//TODO: fix the problem with swagger in finish method in the VotesController. It does not add the wins/loses to the user that has logged in
-//TODO: Implement authentication for creating a vote and assign Creator property to be the logged in user, then you can test the finish method.
-//TODO:Implement logic for the date in other countries too in the controllers.
 
 //builder.Services.AddIdentity<User, IdentityRole>(options =>
 //{

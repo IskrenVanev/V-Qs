@@ -2358,3 +2358,7 @@ C:\Users\user\Desktop\VoteAndQuizWebApi\VoteAndQuizWebApi\VoteAndQuizWebApi\bin\
 C:\Users\user\Desktop\VoteAndQuizWebApi\VoteAndQuizWebApi\VoteAndQuizWebApi\obj\Debug\net8.0\VoteAndQuizWebApi.RazorAssemblyInfo.cache
 C:\Users\user\Desktop\VoteAndQuizWebApi\VoteAndQuizWebApi\VoteAndQuizWebApi\obj\Debug\net8.0\VoteAndQuizWebApi.RazorAssemblyInfo.cs
 C:\Users\user\Desktop\VoteAndQuizWebApi\VoteAndQuizWebApi\VoteAndQuizWebApi\obj\Debug\net8.0\VoteAndQ.C234A408.Up2Date
+C:\Users\user\Desktop\VoteAndQuizWebApi\VoteAndQuizWebApi\VoteAndQuizWebApi\bin\Debug\net8.0\frontendReact\package-lock.json
+C:\Users\user\Desktop\VoteAndQuizWebApi\VoteAndQuizWebApi\VoteAndQuizWebApi\bin\Debug\net8.0\frontendReact\package.json
+C:\Users\user\Desktop\VoteAndQuizWebApi\VoteAndQuizWebApi\VoteAndQuizWebApi\bin\Debug\net8.0\package-lock.json
+C:\Users\user\Desktop\VoteAndQuizWebApi\VoteAndQuizWebApi\VoteAndQuizWebApi\bin\Debug\net8.0\package.json
