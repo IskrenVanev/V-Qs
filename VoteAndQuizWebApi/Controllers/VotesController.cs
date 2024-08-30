@@ -218,7 +218,8 @@ namespace VoteAndQuizWebApi.Controllers
             if (user == null) return Unauthorized("Log in to finish a vote");
 
             var vote = _unitOfWork.Vote.Get(v => v.Id == id, "Options");
-            if (userId != vote.CreatorId)//this actually works
+
+            if (userId != vote.CreatorId)
             {
                 return BadRequest("You can't finish this vote because you are not the creator!");
             }
@@ -239,21 +240,17 @@ namespace VoteAndQuizWebApi.Controllers
                 }
 
                 var winningOptions = vote.Options.Where(o => o.VoteCount == maxVoteCount);
-                foreach (var u in _unitOfWork.User.GetAll().ToList())
+                foreach (var u in _unitOfWork.User.GetAll(null, "UserVoteAnswers").ToList())
                 {
-
-                    
                     // Check if the user voted for any of the winning options
-
                     var userVotedForWinningOption = u.UserVoteAnswers != null &&
                         winningOptions != null &&
                         u.UserVoteAnswers.Any(uva =>
                             winningOptions.Any(wo =>
-                                wo.VoteId == uva.VoteId && // Compare VoteId
-                                wo.Option == uva.Option // Compare Option strings
+                                wo.VoteId == uva.VoteId && 
+                                wo.Option == uva.Option 
                             )
                         );
-
 
                     if (userVotedForWinningOption)
                     {
@@ -284,32 +281,29 @@ namespace VoteAndQuizWebApi.Controllers
         [Authorize]
         public async Task<IActionResult> Vote(int? id, int voteOptionId)
         {
-         if (id == null || voteOptionId == null) return BadRequest();
+            if (id == null || voteOptionId == null) return BadRequest();
 
-         string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-         User user = _unitOfWork.User.Get(u => u.Id == userId, "UserVoteAnswers");
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            User user = _unitOfWork.User.Get(u => u.Id == userId, "UserVoteAnswers");
 
             if (user == null) return BadRequest();
             
-         
-
-            
-            
             var vote = _unitOfWork.Vote.Get(u => u.Id == id, "Options", true);
+
             if (vote == null) return NotFound();
 
-         var voteOption = _unitOfWork.VoteOption.Get(vo => vo.Id == voteOptionId, null, true);
+            var voteOption = _unitOfWork.VoteOption.Get(vo => vo.Id == voteOptionId, null, true);
 
-             if (voteOption == null)
-             {
-                 return BadRequest();
-             }
+            if (voteOption == null)
+            {
+                return BadRequest();
+            }
 
-             if (voteOption.VoteId != vote.Id)
-             {
+            if (voteOption.VoteId != vote.Id)
+            {
 
-                 return BadRequest();
-             }
+                return BadRequest();
+            }
 
              var hasVoted = _unitOfWork.UserVoteAnswer.Get(uva => uva.VoteId == vote.Id && uva.UserId == userId);
 
@@ -317,40 +311,29 @@ namespace VoteAndQuizWebApi.Controllers
              {
                  return BadRequest("You have already voted for this vote.");
              }
+            
+             vote.UpdatedAt = DateTime.UtcNow.AddHours(3);
+             vote.voteVotes += 1;
+             voteOption.VoteCount += 1;
 
-            vote.UpdatedAt = DateTime.UtcNow.AddHours(3);
-            vote.IsActive = true;
-            vote.voteVotes += 1;
-            voteOption.VoteCount += 1;
+             _unitOfWork.Vote.Modify(vote);
+             _unitOfWork.VoteOption.Modify(voteOption);
+             _unitOfWork.Vote.Save();
+             _unitOfWork.VoteOption.Save();
+            
+             var userVoteAnswer = new UserVoteAnswer
+             {
+                 Option = voteOption.Option,
+                 UserId = userId,
+                 VoteId = vote.Id
+             };
 
-          
+             _unitOfWork.User.Save();
+            
+             _unitOfWork.UserVoteAnswer.Add(userVoteAnswer);
+             _unitOfWork.UserVoteAnswer.Save();
 
-            _unitOfWork.Vote.Modify(vote);
-            _unitOfWork.VoteOption.Modify(voteOption);
-            _unitOfWork.Vote.Save();
-            _unitOfWork.VoteOption.Save();
-
-            var userVoteAnswer = new UserVoteAnswer
-            {
-                Option = voteOption.Option,
-                UserId = userId,
-                VoteId = vote.Id
-
-            };
-            // user.
-
-           
-
-
-            _unitOfWork.User.Save();
-
-            _unitOfWork.UserVoteAnswer.Add(userVoteAnswer);
-            _unitOfWork.UserVoteAnswer.Save();
-            return Ok("Successfully voted");
-
+             return Ok("Successfully voted");
         }
-
-        
-
     }
 }
