@@ -2362,3 +2362,4 @@ C:\Users\user\Desktop\VoteAndQuizWebApi\VoteAndQuizWebApi\VoteAndQuizWebApi\bin\
 C:\Users\user\Desktop\VoteAndQuizWebApi\VoteAndQuizWebApi\VoteAndQuizWebApi\bin\Debug\net8.0\frontendReact\package.json
 C:\Users\user\Desktop\VoteAndQuizWebApi\VoteAndQuizWebApi\VoteAndQuizWebApi\bin\Debug\net8.0\package-lock.json
 C:\Users\user\Desktop\VoteAndQuizWebApi\VoteAndQuizWebApi\VoteAndQuizWebApi\bin\Debug\net8.0\package.json
+C:\Users\user\Desktop\VoteAndQuizWebApi\VoteAndQuizWebApi\VoteAndQuizWebApi\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

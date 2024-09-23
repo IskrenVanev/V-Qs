@@ -5,20 +5,20 @@ using VoteAndQuizWebApi.Repository;
 using Microsoft.AspNetCore.Identity;
 using VoteAndQuizWebApi.Models;
 using VoteAndQuizWebApi.Utility;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
         .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<UserManager<User>>();
 builder.Services.AddIdentityApiEndpoints<User>()
@@ -27,9 +27,11 @@ builder.Services.AddIdentityApiEndpoints<User>()
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = $"/Identity/Account/Login";
-    options.LogoutPath = $"/Identity/Account/Logout";
-    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+    options.LoginPath = "/Identity/Account/Login";
+    options.LogoutPath = "/Identity/Account/Logout";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Change to None for local development
+    options.Cookie.SameSite = SameSiteMode.None; // Allow cross-origin
 });
 
 builder.Services.AddRazorPages();
@@ -46,13 +48,31 @@ builder.Services.AddCors(options =>
         {
             policy.WithOrigins("http://localhost:7056") // URL of your React app
                   .AllowAnyHeader()
-                  .AllowAnyMethod();
+                  .AllowAnyMethod()
+                  .AllowCredentials();
         });
 });
 
 var app = builder.Build();
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
+app.MapIdentityApi<User>();
+
 app.UseCors("AllowReactApp");
+
+app.MapPost("/logout", async (SignInManager<User> signInManager) =>
+{
+    await signInManager.SignOutAsync();
+    return Results.Ok();
+}).RequireAuthorization();
+
+app.MapGet("/pingauth", (ClaimsPrincipal user) =>
+{
+    var email = user.FindFirstValue(ClaimTypes.Email); // get the user's email from the claim
+    return Results.Json(new { Email = email }); ; // return the email as a plain text response
+}).RequireAuthorization();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -61,22 +81,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapIdentityApi<User>();
 app.UseHttpsRedirection();
-app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
 
-// Serve React app's static files
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-    // Fallback to serve React index.html for any route not matched by other controllers
-    endpoints.MapFallbackToFile("index.html");
-});
+app.MapFallbackToFile("/index.html");
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
@@ -95,6 +107,13 @@ void SeedDatabase()
         dbInitializer.SeedData();
     }
 }
+
+
+
+
+
+
+
 
 
 //builder.Services.AddIdentity<User, IdentityRole>(options =>

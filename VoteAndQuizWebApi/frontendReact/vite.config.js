@@ -6,13 +6,14 @@ export default defineConfig({
     plugins: [react()],
     server: {
         port: 7056, // Set Vite to run on this port
-        proxy: {
-            '/api': {
-                target: 'http://localhost:7055', // Update this to the new port of your backend
-                changeOrigin: true,
-                secure: false,
-                rewrite: (path) => path.replace(/^\/api/, ''), // Adjust if needed
-            },
-        },
+        proxy: `https://localhost:7055`
+        // proxy: {
+        //     '/api': {
+        //         target: 'http://localhost:7055', // Update this to the new port of your backend
+        //         changeOrigin: true,
+        //         secure: false,
+        //         rewrite: (path) => path.replace(/^\/api/, ''), // Adjust if needed
+        //     },
+        // },
     },
 });

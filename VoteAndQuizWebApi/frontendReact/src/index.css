@@ -26,25 +26,33 @@ body {
     display: inline-block;
 }
 
-.nav-list {
+.nav-list,
+.nav-item button {
     display: flex;
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
 
-.nav-item {
+.nav-item a,
+.nav-item button  {
     margin-left: 20px;
 }
 
-.nav-item a {
+
+.nav-item a,
+.nav-item button {
     color: #ff6f61;
-    text-decoration: none;
+    text-decoration: none; /* Remove if you want underlines on buttons */
     font-size: 1.2rem;
     transition: color 0.3s;
+    background: none; /* Remove default button background */
+    border: none; /* Remove default button border */
+    cursor: pointer; /* Change cursor to pointer */
 }
 
-.nav-item a:hover {
+.nav-item a:hover,
+.nav-item button:hover {
     color: #e65b50;
 }
 
@@ -65,6 +73,28 @@ body {
 }
 
 .home-container p {
+    font-size: 1.5rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.about-container {
+    max-width: 800px;
+    margin: 20px auto 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.about-container h2 {
+    text-align: center;
+    color: #ff6f61; /* Matches the heading color */
+    font-size: 2.3rem;
+    margin-bottom: 20px;
+}
+
+.about-container p {
     font-size: 1.5rem;
     line-height: 1.6;
     margin-bottom: 15px;
