@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "KH/XJ5yWU7s=",
+  "dgSpecHash": "9nuzyWrEdPo=",
   "success": true,
-  "projectFilePath": "C:\\Users\\user\\Desktop\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\VoteAndQuizWebApi\\VoteAndQuizWebApi.csproj",
+  "projectFilePath": "C:\\Users\\user\\Desktop\\github projects\\V-Q should work 2\\V-Qs\\VoteAndQuizWebApi\\VoteAndQuizWebApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\user\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

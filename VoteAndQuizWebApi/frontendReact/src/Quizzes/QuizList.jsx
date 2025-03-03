@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './QuizList.css';
 
-const VoteList = () => {
+const QuizList = () => {
     const [quizzes, setQuizzes] = useState([]);
     const [error, setError] = useState(null);
     const [showQuizzes, setShowQuizzes] = useState(false);
@@ -19,15 +20,15 @@ const VoteList = () => {
     };
 
     return (
-        <div>
+        <div className='quiz-list-container'>
             <h1>Quizzes</h1>
-            <button onClick={fetchQuizzes}>Show Quizzes</button>
+            <button className='show-quizes-btn' onClick={fetchQuizzes}>Show Quizzes</button>
             {showQuizzes && (
                 <div>
-                    {error && <p>Error: {error}</p>}
-                    <ul>
+                    {error && <p className="error-message">Error: {error}</p>}
+                    <ul className='quiz-list'>
                         {quizzes.map(quiz => (
-                            <li key={quiz.id}>{quiz.name}</li>
+                            <li key={quiz.id} className="balloon">{quiz.name}</li>
                         ))}
                     </ul>
                 </div>
@@ -36,4 +37,4 @@ const VoteList = () => {
     );
 };
 
-export default VoteList;
+export default QuizList;

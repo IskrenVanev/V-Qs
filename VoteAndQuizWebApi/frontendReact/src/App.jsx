@@ -1,8 +1,8 @@
 import React from 'react';
 import {Route, Routes, Link } from 'react-router-dom';
-import VoteList from './VoteList.jsx';
+import VoteList from './Votes/VoteList.jsx';
 import About from './About.jsx';
-import QuizList from './QuizList.jsx';
+import QuizList from './Quizzes/QuizList.jsx';
 import Home from './Home.jsx';
 import Register from './Identity/Register.jsx';
 import Login from './Identity/Login.jsx';
