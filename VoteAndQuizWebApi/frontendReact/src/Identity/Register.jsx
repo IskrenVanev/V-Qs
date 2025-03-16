@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext.jsx"; // Import useAuth to access login method
+import './Register.css'; // Import the new CSS file
 
 function Register() {
     const [email, setEmail] = useState("");
@@ -19,7 +20,7 @@ function Register() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         if (!email || !password || !confirmPassword) {
             setError("Please fill in all fields.");
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -28,7 +29,7 @@ function Register() {
             setError("Passwords do not match.");
         } else {
             setError(""); // Clear error message
-    
+
             try {
                 const response = await fetch("https://localhost:7055/register", {
                     method: "POST",
@@ -38,7 +39,7 @@ function Register() {
                     body: JSON.stringify({ email, password }),
                     credentials: "include", // Include cookies in the request
                 });
-    
+
                 if (response.ok) {
                     // Log in the user immediately after registration
                     const loginResponse = await fetch("https://localhost:7055/login?useSessionCookies=true", {
@@ -49,14 +50,11 @@ function Register() {
                         body: JSON.stringify({ email, password }),
                         credentials: "include", // Ensure cookies are sent
                     });
-    
+
                     if (loginResponse.ok) {
-                        // Assuming login sets the necessary cookies and updates auth state
                         await login(); // Call the login function from AuthContext
                         navigate("/"); // Redirect to home after successful login
                     } else {
-                        const loginErrorData = await loginResponse.json();
-                        console.error("Login failed:", loginErrorData);
                         setError("Registration successful but login failed.");
                     }
                 } else {
@@ -64,7 +62,6 @@ function Register() {
                     setError(errorData.message || "Error registering. Please try again.");
                 }
             } catch (error) {
-                console.error("Error during registration:", error);
                 setError("Error registering. Please check your network connection.");
             }
         }
@@ -75,51 +72,46 @@ function Register() {
     };
 
     return (
-        <div className="containerbox">
+        <div className="register-container">
             <h3>Register</h3>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label htmlFor="email">Email:</label>
-                </div>
-                <div>
+                    <label htmlFor="email">Email</label>
                     <input
                         type="email"
                         id="email"
                         name="email"
                         value={email}
                         onChange={handleChange}
+                        required
                     />
                 </div>
                 <div>
-                    <label htmlFor="password">Password:</label>
-                </div>
-                <div>
+                    <label htmlFor="password">Password</label>
                     <input
                         type="password"
                         id="password"
                         name="password"
                         value={password}
                         onChange={handleChange}
+                        required
                     />
                 </div>
                 <div>
-                    <label htmlFor="confirmPassword">Confirm Password:</label>
-                </div>
-                <div>
+                    <label htmlFor="confirmPassword">Confirm Password</label>
                     <input
                         type="password"
                         id="confirmPassword"
                         name="confirmPassword"
                         value={confirmPassword}
                         onChange={handleChange}
+                        required
                     />
                 </div>
-                <div>
-                    <button type="submit">Register</button>
-                </div>
-                <div>
-                    <button type="button" onClick={handleLoginClick}>Go to Login</button>
-                </div>
+                <button type="submit">Register</button>
+                <button type="button" className="go-to-login-button" onClick={handleLoginClick}>
+                    Go to Login
+                </button>
             </form>
             {error && <p className="error">{error}</p>}
         </div>
