@@ -8,7 +8,7 @@ body {
     justify-content: space-between;
     align-items: center;
     max-width: 1200px;
-    margin: 0px auto;
+    margin: 10px auto;
     background-color: #f9f9f9; /* Background color for both heading and nav */
     border-radius: 100px;
     padding: 25px; /* Padding for the container */
@@ -17,7 +17,7 @@ body {
 /* Style for the heading */
 .heading {
     font-size: 2.5rem;
-    color:#1a237e;
+    color: #1a237e;
     margin: 0; /* Removes default margin */
 }
 
@@ -35,10 +35,9 @@ body {
 }
 
 .nav-item a,
-.nav-item button  {
+.nav-item button {
     margin-left: 20px;
 }
-
 
 .nav-item a,
 .nav-item button {
@@ -63,6 +62,19 @@ body {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.image-container {
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically (if parent has a height) */
+    margin-bottom: 20px; /* Adds space below the image */
+    margin-top: 20px;
+}
+.home-image {
+    width: 100%; /* Adjust width */
+    max-width: 450px; /* Prevent it from being too big */
+    height: auto;
+    border-radius: 10px; /* Optional: Adds rounded corners */
 }
 
 .home-container h2 {
@@ -98,4 +110,60 @@ body {
     font-size: 1.5rem;
     line-height: 1.6;
     margin-bottom: 15px;
+}
+
+/* New Styles for the quiz and vote facts layout */
+.content-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.facts-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    flex-direction: column;
+}
+
+.quiz-facts,
+.vote-facts {
+    background-color: #f0f8ff; /* Light blue for quiz facts */
+    border-radius: 8px;
+    padding: 20px;
+    margin: 80px;
+    max-width: 400px; /* Increased width */
+}
+
+.vote-facts {
+    background-color: #fff0f5; /* Light pink for vote facts */
+}
+
+
+.fact {
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #333;
+}
+
+.image-container {
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center;
+    flex: 0 0 450px; /* Set the image width */
+    margin: 0 20px; /* Space between image and facts */
+}
+
+/* Fade effect for facts */
+.fade {
+    animation: fade 10s ease-in-out infinite;
+}
+
+@keyframes fade {
+    0% { opacity: 0; }
+    30% { opacity: 1; } /* Fade in quicker */
+    70% { opacity: 1; } /* Hold at full opacity */
+    100% { opacity: 0; } /* Fade out quickly */
 }

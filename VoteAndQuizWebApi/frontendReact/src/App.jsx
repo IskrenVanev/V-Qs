@@ -9,6 +9,7 @@ import Login from './Identity/Login.jsx';
 import { useAuth } from './AuthContext.jsx'; // Import the useAuth hook
 import LogoutLink from './Identity/LogoutLink.jsx';
 
+
 function App() {
     const { isAuthenticated } = useAuth(); // Destructure the isAuthenticated state
     console.log(isAuthenticated);

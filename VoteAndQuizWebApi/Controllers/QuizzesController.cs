@@ -16,6 +16,7 @@ namespace VoteAndQuizWebApi.Controllers
 {
     [Route("api/Quizzes")]
     [ApiController]
+    [Authorize]
     public class QuizzesController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
