@@ -8,7 +8,7 @@ const QuizList = () => {
     const [showQuizzes, setShowQuizzes] = useState(false);
 
     const fetchQuizzes = () => {
-        axios.get('https://localhost:7055/api/Quizzes')
+        axios.get('https://localhost:7055/api/Quizzes', { withCredentials: true })
             .then(response => {
                 setQuizzes(response.data);
                 setShowQuizzes(true);

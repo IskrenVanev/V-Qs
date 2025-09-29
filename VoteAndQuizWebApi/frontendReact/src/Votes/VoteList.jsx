@@ -8,7 +8,7 @@ const VoteList = () => {
     const [showVotes, setShowVotes] = useState(false);
 
     const fetchVotes = () => {
-        axios.get('https://localhost:7055/api/Votes')
+        axios.get('https://localhost:7055/api/Votes', { withCredentials: true })
             .then(response => {
                 setVotes(response.data);
                 setShowVotes(true);
