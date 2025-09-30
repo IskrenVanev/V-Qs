@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../AuthContext.jsx'; // Import the useAuth hook
 import "./Login.css";
+import { Link } from "react-router-dom";
 
 function Login() {
     const { login } = useAuth();
@@ -9,7 +10,6 @@ function Login() {
     const [password, setPassword] = useState("");
     const [rememberme, setRememberme] = useState(false);
     const [error, setError] = useState("");
-    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value, checked } = e.target;
@@ -53,7 +53,7 @@ function Login() {
 
     return (
         <div className="login-container">
-            <h3>Login</h3>
+            <h3>Log In</h3>
             <form onSubmit={handleSubmit}>
         <div>
             <label htmlFor="email">Email</label>
@@ -90,9 +90,16 @@ function Login() {
             </label>
         </div>
         <div>
-            <button type="submit">Login</button>
+            <button type="submit">Log In</button>
         </div>
         {error && <p className="error">{error}</p>}
+
+        <Link 
+        to="/Register" 
+        style={{ marginTop: "20px", display: "block" }}
+        >
+        You don't have an account? Click here.
+        </Link>
     </form>
 
         </div>

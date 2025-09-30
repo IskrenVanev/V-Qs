@@ -1,18 +1,19 @@
 import React from 'react';
-import {Route, Routes, Link } from 'react-router-dom';
+import { Route, Routes, Link } from 'react-router-dom';
 import VoteList from './Votes/VoteList.jsx';
 import About from './About.jsx';
 import QuizList from './Quizzes/QuizList.jsx';
 import Home from './Home.jsx';
 import Register from './Identity/Register.jsx';
 import Login from './Identity/Login.jsx';
-import { useAuth } from './AuthContext.jsx'; // Import the useAuth hook
+import { useAuth } from './AuthContext.jsx';
 import LogoutLink from './Identity/LogoutLink.jsx';
-
+import ProtectedRoute from './ProtectedRoute.jsx';
 
 function App() {
-    const { isAuthenticated } = useAuth(); // Destructure the isAuthenticated state
+    const { isAuthenticated } = useAuth();
     console.log(isAuthenticated);
+
     return (
         <div className="App">
             <header className="app-header">
@@ -41,20 +42,33 @@ function App() {
                                 </li>
                             </>
                         ) : (
-                            <>
-                                <li className="nav-item">
-                                    <LogoutLink>Log out</LogoutLink>
-                                </li>
-                            </>
+                            <li className="nav-item">
+                                <LogoutLink>Log out</LogoutLink>
+                            </li>
                         )}
                     </ul>
                 </nav>
             </header>
+
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/About" element={<About />} />
-                <Route path="/Votes" element={<VoteList />} />
-                <Route path="/Quizzes" element={<QuizList />} />
+                <Route
+                    path="/Votes"
+                    element={
+                        <ProtectedRoute>
+                            <VoteList />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/Quizzes"
+                    element={
+                        <ProtectedRoute>
+                            <QuizList />
+                        </ProtectedRoute>
+                    }
+                />
                 <Route path="/Login" element={<Login />} />
                 <Route path="/Register" element={<Register />} />
             </Routes>

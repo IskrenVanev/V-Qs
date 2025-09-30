@@ -19,7 +19,6 @@ function LogoutLink({ children }) {
     
             if (response.ok) {
                 logout(); // Update the authentication state
-                navigate('/'); // Redirect to home after successful logout
             } else {
                 console.error("Logout failed.");
             }
